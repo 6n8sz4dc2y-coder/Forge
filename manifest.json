@@ -1,1 +1,9 @@
-{"name":"Forge PRS","short_name":"Forge","start_url":"./index.html","display":"standalone","background_color":"#07090d","theme_color":"#ff3b30","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name":"Forge Campbell PRS",
+  "short_name":"Forge",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#0b0f14",
+  "theme_color":"#0b0f14",
+  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]
+}
