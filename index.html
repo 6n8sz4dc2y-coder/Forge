@@ -2,14 +2,146 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f14" />
-  <title>Forge Campbell PRS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#050505" />
+  <title>Forge – Campbell PRS Companion</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <style>
+    :root{--bg:#050505;--panel:#111214;--panel2:#17181b;--muted:#8b8f98;--text:#f3f4f6;--red:#e11920;--red2:#b81218;--line:#272a30;--green:#49c55f;--amber:#f5b84b;--blue:#60a5fa;--radius:18px}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}body{min-height:100svh}.app{max-width:520px;margin:0 auto;min-height:100svh;padding:18px 16px 92px}.top{display:flex;align-items:flex-start;justify-content:space-between;margin:12px 0 18px}.brand{font-weight:900;font-style:italic;font-size:34px;letter-spacing:1px;color:#ff2a2f}.sub{font-size:13px;color:#d6d6d6;margin-top:2px}.bell{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:#101113}.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:0 12px 36px rgba(0,0,0,.22)}.label{color:var(--red);text-transform:uppercase;font-size:11px;letter-spacing:.5px;font-weight:800}.title{font-size:25px;font-weight:800;margin:9px 0}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.muted{color:var(--muted)}.small{font-size:12px}.btn{border:0;border-radius:12px;background:var(--red);color:white;width:100%;padding:15px 16px;font-size:15px;font-weight:800;margin-top:14px}.btn.secondary{background:#24262b}.btn.ghost{background:transparent;border:1px solid var(--line)}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#0d0e10;border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center}.stat .name{font-size:10px;color:var(--muted);text-transform:uppercase}.stat .num{font-size:20px;font-weight:900;margin-top:5px}.bar{height:8px;background:#272a30;border-radius:99px;overflow:hidden}.bar>span{display:block;height:100%;background:var(--red);border-radius:99px}.tabs{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:10px 0}.tab{flex:1;text-align:center;padding:11px 8px;color:var(--muted);font-weight:800;font-size:12px}.tab.active{background:var(--red);color:white}.screen{display:none}.screen.active{display:block}.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(520px,100%);height:76px;background:rgba(5,5,5,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom)}.nav{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#aaa;font-size:11px;gap:4px}.nav .ico{font-size:20px}.nav.active{color:var(--red)}.set{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #202227}.set:last-child{border-bottom:0}.check{width:24px;height:24px;border-radius:50%;border:2px solid #70747d}.check.done{background:var(--green);border-color:var(--green);display:grid;place-items:center}.check.done:after{content:'✓';font-weight:900;color:white}.pill{border-radius:999px;background:#2a1012;color:#ffb0b0;padding:5px 9px;font-size:11px;font-weight:900}.phaseItem{padding:15px 0;border-bottom:1px solid #24272e;display:flex;justify-content:space-between}.search{width:100%;background:#131418;border:1px solid var(--line);color:white;border-radius:12px;padding:13px 14px}.exercise{display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #23262d}.thumb{width:42px;height:42px;border-radius:10px;background:#282b31;display:grid;place-items:center}.history{display:grid;gap:10px}.status{background:#103d19;color:#9cffaa;border-radius:8px;padding:6px 8px;font-size:12px}.input{width:100%;background:#0f1013;color:white;border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:8px}.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hidden{display:none!important}h2{margin:8px 0 12px}hr{border:0;border-top:1px solid var(--line);margin:14px 0}.tiny{font-size:10px}.right{text-align:right}.red{color:var(--red)}.green{color:var(--green)}
+  </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="app.js"></script>
+  <main class="app">
+    <section id="home" class="screen active">
+      <div class="top"><div><div class="brand">FORGE</div><div class="sub">Campbell PRS Companion</div></div><div class="bell">🔔</div></div>
+      <div class="card">
+        <div class="row"><div class="label">Today's workout</div><div class="pill">Day <span id="todayDay">1</span></div></div>
+        <div class="title" id="todayTitle">Deadlift – Speed</div>
+        <div class="muted small" id="todayMeta">Phase 1 • Week 1 • Day 1</div>
+        <p class="muted small" id="todayFocus">Focus: Speed & perfect technique. Explode every rep.</p>
+        <button class="btn" onclick="go('workout')">START WORKOUT</button>
+      </div>
+      <div class="card"><div class="label">Next workout</div><div class="row" style="margin-top:10px"><b id="nextTitle">Bench – Reps</b><span class="muted small" id="nextDay">Day 2</span></div></div>
+      <div class="card"><div class="label">Current phase</div><div class="row" style="margin:10px 0"><b id="phaseName">Phase 1 – Accumulation</b><span class="muted small" id="phaseProgressText">Week 1 of 3</span></div><div class="bar"><span id="phaseBar" style="width:33%"></span></div></div>
+      <div class="card"><div class="row"><div class="label">Campbell Maxes (95%)</div><button class="small muted" onclick="go('settings')" style="background:none;border:0;color:var(--muted)">Edit</button></div><div class="grid4" id="tmGrid"></div></div>
+      <div class="card"><div class="label">Estimated 1RM</div><div class="grid4" id="rmGrid" style="margin-top:10px"></div></div>
+      <div class="split"><div class="card"><div class="label">Bodyweight</div><div class="title" id="bw">87.3 kg</div><div class="muted small">Today</div></div><div class="card"><div class="label">Recovery</div><div class="title">Ready</div><div class="muted small">Go train hard</div></div></div>
+    </section>
+
+    <section id="programme" class="screen">
+      <div class="top"><h2>Programme</h2><button class="bell">⌁</button></div>
+      <div class="tabs" id="phaseTabs"></div>
+      <div class="card"><div class="row"><div><div class="label" id="progPhase">Phase 1 – Accumulation</div><p class="muted small" id="progDesc">Build work capacity, perfect technique, and accumulate quality volume.</p></div><span class="muted small">3 Weeks</span></div></div>
+      <div class="card" id="programmeWeeks"></div>
+      <div class="card"><div class="label" style="color:#b78cff">Optional Day 5</div><p>Upper Body Supplemental</p><p class="muted small">Arms, delts, weak points. Keep recovery in mind.</p></div>
+    </section>
+
+    <section id="workout" class="screen">
+      <div class="top"><button class="bell" onclick="go('home')">←</button><h2 id="woTitle">Deadlift – Speed</h2><button class="bell">…</button></div>
+      <div class="card"><div class="row"><div class="label">Campbell Max</div><b id="woTM">149.0 kg</b></div></div>
+      <div class="card"><div class="label">Main Work</div><div class="title" id="mainWork">7 × 2 @ 62.5%</div><div class="muted" id="mainKg">= 92.5 kg</div><p class="muted small" id="workCue">Speed: Explode every rep. Rest 60–90 sec between sets.</p></div>
+      <div class="card"><div class="row"><div class="label">Warm-up</div><span class="muted small">auto</span></div><div id="warmups"></div></div>
+      <div class="card"><div class="row"><div class="label">Working Sets</div><span class="muted small" id="setCount">7 sets</span></div><div id="workingSets"></div></div>
+      <div class="card"><div class="label">Accessories</div><div id="accessories"></div></div>
+      <div class="split"><button class="btn secondary" onclick="logSets()">LOG SETS</button><button class="btn" onclick="completeWorkout()">COMPLETE WORKOUT</button></div>
+    </section>
+
+    <section id="bank" class="screen">
+      <div class="top"><h2>Exercise Bank</h2></div>
+      <input class="search" placeholder="Search exercises..." oninput="renderBank(this.value)">
+      <div class="tabs"><button class="tab active" onclick="bankFilter='all';renderBank()">ALL</button><button class="tab" onclick="bankFilter='bench';renderBank()">BENCH</button><button class="tab" onclick="bankFilter='deadlift';renderBank()">DEADLIFT</button><button class="tab" onclick="bankFilter='squat';renderBank()">SQUAT</button><button class="tab" onclick="bankFilter='back';renderBank()">BACK</button></div>
+      <div class="card" id="bankList"></div>
+    </section>
+
+    <section id="progress" class="screen">
+      <div class="top"><h2>Progress</h2></div>
+      <div class="tabs"><div class="tab active">LIFTS</div><div class="tab">OVERVIEW</div></div>
+      <div class="card"><div class="label">Bench Press</div><p class="muted small">Current Campbell Max (95%)</p><div class="title"><span id="benchTMbig">102.0</span> kg</div><hr><div class="row"><span>Estimated 1RM</span><b id="benchRMbig">107.5 kg</b></div></div>
+      <div class="split"><div class="card"><div class="label">Best AMRAP</div><div class="title">105 × 6</div><div class="muted small">Reps</div></div><div class="card"><div class="label">Total Volume</div><div class="title" id="volume">0 kg</div><div class="muted small">This cycle</div></div></div>
+      <div class="card"><div class="label">Estimated 1RM over time</div><svg viewBox="0 0 320 120" width="100%"><polyline points="10,100 55,92 95,74 140,68 185,54 230,34 275,28 310,22" fill="none" stroke="#e11920" stroke-width="4"/><line x1="10" y1="100" x2="310" y2="100" stroke="#333"/><text x="10" y="116" fill="#888" font-size="10">Apr 1</text><text x="270" y="116" fill="#888" font-size="10">Jun 1</text></svg></div>
+    </section>
+
+    <section id="history" class="screen">
+      <div class="top"><h2>History</h2><button class="bell">⌁</button></div><div class="history" id="historyList"></div>
+    </section>
+
+    <section id="settings" class="screen">
+      <div class="top"><h2>Settings</h2></div>
+      <div class="card"><div class="label">Programme</div><label>Current Phase <select id="phaseSel" class="input"></select></label><label>Week <select id="weekSel" class="input"></select></label><label>Day <select id="daySel" class="input"></select></label><button class="btn" onclick="savePosition()">Save Position</button></div>
+      <div class="card"><div class="label">1RM Settings</div><label>Squat 1RM<input class="input" id="squat1" type="number"></label><label>Bench 1RM<input class="input" id="bench1" type="number"></label><label>Deadlift 1RM<input class="input" id="deadlift1" type="number"></label><label>OHP / Viking 1RM<input class="input" id="ohp1" type="number"></label><button class="btn" onclick="saveMaxes()">Save Maxes</button></div>
+      <div class="card"><div class="label">Mode</div><div class="tabs"><div class="tab">STRICT</div><div class="tab active">GAVIN</div></div><p class="muted small">Strict follows Campbell PRS exactly. Gavin keeps main work exact and allows accessory substitutions.</p></div>
+      <div class="card"><div class="label">Data</div><button class="btn secondary" onclick="exportData()">EXPORT DATA</button><button class="btn ghost" onclick="resetData()">RESET ALL DATA</button></div>
+    </section>
+  </main>
+
+  <nav class="bottom">
+    <div class="nav active" onclick="go('home')"><div class="ico">⌂</div><div>Home</div></div>
+    <div class="nav" onclick="go('programme')"><div class="ico">▣</div><div>Programme</div></div>
+    <div class="nav" onclick="go('workout')"><div class="ico">🏋️</div><div>Workout</div></div>
+    <div class="nav" onclick="go('history')"><div class="ico">◷</div><div>History</div></div>
+    <div class="nav" onclick="go('bank')"><div class="ico">•••</div><div>More</div></div>
+  </nav>
+<script>
+const defaultState={maxes:{squat:129,bench:108,deadlift:157,ohp:71},bodyweight:87.3,position:{phase:0,week:0,day:0},history:[],doneSets:{}};
+let state=JSON.parse(localStorage.getItem('forgeState')||'null')||defaultState;
+const phases=[
+ {name:'Phase 1 – Accumulation',short:'PHASE 1',desc:'Average intensity, average volume. Build work capacity, perfect technique, and accumulate quality volume.',pcts:{power:[85],reps:[80],speed:[62.5]},sets:{power:[3,3],reps:[5,5],speed:[7,2]}},
+ {name:'Phase 2 – Intensity',short:'PHASE 2',desc:'High intensity, low volume. Heavier work with less overall fatigue.',pcts:{power:[90,92.5,95],reps:[82.5],speed:[70]},sets:{power:[3,1],reps:[3,5],speed:[5,2]}},
+ {name:'Phase 3 – Volume',short:'PHASE 3',desc:'Lower intensity, higher volume. Build the base before peaking.',pcts:{power:[80],reps:[77.5],speed:[62.5]},sets:{power:[5,3],reps:[4,8],speed:[7,3]}},
+ {name:'Peak',short:'PEAK',desc:'Use true 1RM. Practice heavy singles and choose openers.',pcts:{power:[90,95],reps:[80],speed:[60]},sets:{power:[3,1],reps:[3,3],speed:[3,2]},trueMax:true}
+];
+const rotation=[
+ {lift:'deadlift',name:'Deadlift',type:'Speed',focus:'Speed & perfect technique. Explode every rep.'},
+ {lift:'bench',name:'Bench',type:'Reps',focus:'Volume and repeated movement patterns.'},
+ {lift:'squat',name:'Squat',type:'Power',focus:'Strong triples/singles. No missed reps.'},
+ {lift:'ohp',name:'OHP',type:'Speed',focus:'Viking Press substitute. Fast, clean reps.'}
+];
+const blockTypes={0:{deadlift:'Speed',bench:'Reps',squat:'Power',ohp:'Speed'},1:{deadlift:'Reps',bench:'Power',squat:'Speed',ohp:'Reps'},2:{deadlift:'Power',bench:'Speed',squat:'Reps',ohp:'Power'}};
+const accessories={
+ 'deadlift-Speed':['Deficit Deadlift','Back Squat','Pull Ups'],
+ 'deadlift-Reps':['Romanian Deadlift','Landmine Row','Pull Ups'],
+ 'deadlift-Power':['Deficit Deadlift','Barbell Row','Pull Ups'],
+ 'bench-Reps':['Flat DB Press','Weighted Dips','Close Grip Bench'],
+ 'bench-Power':['Paused Bench','Incline DB Press','Weighted Dips'],
+ 'bench-Speed':['Touch & Go Bench','Flat DB Press','Close Grip Bench'],
+ 'squat-Power':['Paused Squat','Romanian Deadlift','Ab Wheel'],
+ 'squat-Speed':['Tempo Squat','Barbell Row','Ab Wheel'],
+ 'squat-Reps':['Beltless Squat','Romanian Deadlift','Ab Wheel'],
+ 'ohp-Speed':['Viking Press','Lateral Raise','Band Pull Apart'],
+ 'ohp-Reps':['Viking Press','Rear Delt Raise','Hammer Curl'],
+ 'ohp-Power':['Viking Press','Close Grip Bench','Band Pull Apart']
+};
+const bank=[['bench','Competition Bench'],['bench','Paused Bench'],['bench','Close Grip Bench'],['bench','Flat DB Press'],['bench','Incline DB Press'],['bench','Weighted Dips'],['deadlift','Conventional Deadlift'],['deadlift','Deficit Deadlift'],['deadlift','Romanian Deadlift'],['back','Landmine Row'],['back','Barbell Row'],['back','Chest Supported DB Row'],['back','Pull Ups / Lat Pulldown'],['squat','Back Squat'],['squat','Paused Squat'],['squat','Tempo Squat'],['squat','Beltless Squat'],['ohp','Viking Press'],['ohp','Lateral Raise'],['ohp','Rear Delt Raise'],['ohp','Band Pull Apart']];
+let bankFilter='all';
+function save(){localStorage.setItem('forgeState',JSON.stringify(state))}
+function round2p5(x){return Math.round(x/2.5)*2.5}
+function current(){const p=state.position;const base=rotation[p.day];const type=blockTypes[p.week%3][base.lift];return {...base,type,phase:p.phase,week:p.week,day:p.day}}
+function prescription(lift,type,phaseIdx){const ph=phases[phaseIdx], t=type.toLowerCase();let pct=ph.pcts[t][Math.min(state.position.week,ph.pcts[t].length-1)]||ph.pcts[t][0];let [sets,reps]=ph.sets[t];return {pct,sets,reps}}
+function tm(lift,phaseIdx=state.position.phase){return (phases[phaseIdx].trueMax?state.maxes[lift]:state.maxes[lift]*.95)}
+function workWeight(lift,type,phaseIdx){const pr=prescription(lift,type,phaseIdx);return round2p5(tm(lift,phaseIdx)*pr.pct/100)}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));const map={home:0,programme:1,workout:2,history:3,bank:4,progress:4,settings:4};document.querySelectorAll('.nav')[map[id]||0].classList.add('active');render()}
+function render(){renderHome();renderProgramme();renderWorkout();renderBank();renderProgress();renderHistory();renderSettings()}
+function renderHome(){const c=current(),n=nextWorkout();document.getElementById('todayTitle').textContent=`${c.name} – ${c.type}`;document.getElementById('todayMeta').textContent=`${phases[c.phase].short} • Week ${c.week+1} • Day ${c.day+1}`;document.getElementById('todayDay').textContent=c.day+1;document.getElementById('todayFocus').textContent='Focus: '+c.focus;document.getElementById('nextTitle').textContent=`${n.name} – ${n.type}`;document.getElementById('nextDay').textContent=`Day ${n.day+1}`;document.getElementById('phaseName').textContent=phases[c.phase].name;document.getElementById('phaseProgressText').textContent=`Week ${c.week+1} of 3`;document.getElementById('phaseBar').style.width=((c.week+1)/3*100)+'%';document.getElementById('tmGrid').innerHTML=['squat','bench','deadlift','ohp'].map(l=>stat(l,tm(l).toFixed(1))).join('');document.getElementById('rmGrid').innerHTML=['squat','bench','deadlift','ohp'].map(l=>stat(l,state.maxes[l].toFixed(1))).join('');document.getElementById('bw').textContent=state.bodyweight+' kg'}
+function stat(name,num){return `<div class="stat"><div class="name">${name}</div><div class="num">${num}</div><div class="tiny muted">kg</div></div>`}
+function nextWorkout(){let p={...state.position};p.day++; if(p.day>3){p.day=0;p.week++; if(p.week>2){p.week=0;p.phase=(p.phase+1)%4}} const base=rotation[p.day];return {...base,type:blockTypes[p.week%3][base.lift],day:p.day}}
+function renderProgramme(){document.getElementById('phaseTabs').innerHTML=phases.map((p,i)=>`<div class="tab ${i===state.position.phase?'active':''}" onclick="state.position.phase=${i};save();render()">${p.short}</div>`).join('');document.getElementById('progPhase').textContent=phases[state.position.phase].name;document.getElementById('progDesc').textContent=phases[state.position.phase].desc;let html='';for(let w=0;w<3;w++){html+=`<div class="label">WEEK ${w+1}</div>`;for(let d=0;d<4;d++){const r=rotation[d],type=blockTypes[w][r.lift];html+=`<div class="phaseItem" onclick="state.position.week=${w};state.position.day=${d};save();render();go('workout')"><span>Day ${d+1}</span><b>${r.name} – ${type}</b><span>›</span></div>`}}document.getElementById('programmeWeeks').innerHTML=html}
+function renderWorkout(){const c=current(),pr=prescription(c.lift,c.type,c.phase),kg=workWeight(c.lift,c.type,c.phase);document.getElementById('woTitle').textContent=`${c.name} – ${c.type}`;document.getElementById('woTM').textContent=tm(c.lift,c.phase).toFixed(1)+' kg';document.getElementById('mainWork').textContent=`${pr.sets} × ${pr.reps} @ ${pr.pct}%`;document.getElementById('mainKg').textContent=`= ${kg} kg`;document.getElementById('setCount').textContent=pr.sets+' sets';document.getElementById('workCue').textContent=c.type==='Speed'?'Speed: explode every rep. Rest 60–90 sec.':c.type==='Power'?'Power: push if it is there, but no missed reps.':'Reps: quality volume and repeatable technique.';document.getElementById('warmups').innerHTML=warmups(kg).map(x=>`<div class="set"><div class="check done"></div><div>${x.reps} reps</div><b>${x.w} kg</b></div>`).join('');let key=`${c.phase}-${c.week}-${c.day}`,done=state.doneSets[key]||[];document.getElementById('workingSets').innerHTML=Array.from({length:pr.sets},(_,i)=>`<div class="set" onclick="toggleSet('${key}',${i})"><div class="check ${done.includes(i)?'done':''}"></div><div>${i+1}. ${kg} kg × ${pr.reps}</div><span></span></div>`).join('');document.getElementById('accessories').innerHTML=(accessories[`${c.lift}-${c.type}`]||[]).map((a,i)=>`<div class="set"><div class="thumb">🏋️</div><div>${a}</div><b class="small muted">${i===2?'3 × AMRAP':'3 × 6–8'}</b></div>`).join('')}
+function warmups(top){return [{w:20,reps:5},{w:round2p5(top*.55),reps:5},{w:round2p5(top*.75),reps:3}].filter((v,i,a)=>i===0||v.w>a[i-1].w)}
+function toggleSet(key,i){let arr=state.doneSets[key]||[];arr=arr.includes(i)?arr.filter(x=>x!==i):[...arr,i];state.doneSets[key]=arr;save();renderWorkout()}
+function logSets(){alert('Sets saved.')}
+function completeWorkout(){const c=current(),pr=prescription(c.lift,c.type,c.phase),kg=workWeight(c.lift,c.type,c.phase);state.history.unshift({date:new Date().toLocaleDateString('en-GB'),title:`${c.name} – ${c.type}`,work:`${pr.sets} × ${pr.reps} @ ${kg} kg`,volume:Math.round(pr.sets*pr.reps*kg)});advance();save();render();go('home')}
+function advance(){state.position.day++;if(state.position.day>3){state.position.day=0;state.position.week++;if(state.position.week>2){state.position.week=0;state.position.phase=(state.position.phase+1)%4}}}
+function renderBank(q=''){let items=bank.filter(([cat,name])=>(bankFilter==='all'||cat===bankFilter)&&name.toLowerCase().includes((q||'').toLowerCase()));document.getElementById('bankList').innerHTML=items.map(([cat,name])=>`<div class="exercise"><div class="thumb">🏋️</div><div><b>${name}</b><div class="muted small">${cat}</div></div><span>›</span></div>`).join('')}
+function renderProgress(){document.getElementById('benchTMbig').textContent=tm('bench').toFixed(1);document.getElementById('benchRMbig').textContent=state.maxes.bench.toFixed(1)+' kg';document.getElementById('volume').textContent=state.history.reduce((a,b)=>a+(b.volume||0),0).toLocaleString()+' kg'}
+function renderHistory(){document.getElementById('historyList').innerHTML=(state.history.length?state.history:[{date:'Example',title:'Deadlift – Speed',work:'7 × 2 @ 92.5 kg',volume:1295}]).map(h=>`<div class="card"><div class="muted small">${h.date}</div><div class="row"><h3>${h.title}</h3><span class="status">Completed</span></div><div>${h.work}</div><hr><div class="muted small">Volume ${h.volume.toLocaleString()} kg • RPE 7.5</div></div>`).join('')}
+function renderSettings(){['phaseSel','weekSel','daySel'].forEach(id=>{if(!document.getElementById(id).options.length){}});document.getElementById('phaseSel').innerHTML=phases.map((p,i)=>`<option value="${i}" ${i===state.position.phase?'selected':''}>${p.name}</option>`).join('');document.getElementById('weekSel').innerHTML=[0,1,2].map(i=>`<option value="${i}" ${i===state.position.week?'selected':''}>Week ${i+1}</option>`).join('');document.getElementById('daySel').innerHTML=[0,1,2,3].map(i=>`<option value="${i}" ${i===state.position.day?'selected':''}>Day ${i+1}</option>`).join('');['squat','bench','deadlift','ohp'].forEach(l=>document.getElementById(l+'1').value=state.maxes[l])}
+function savePosition(){state.position={phase:+phaseSel.value,week:+weekSel.value,day:+daySel.value};save();render();go('home')}
+function saveMaxes(){['squat','bench','deadlift','ohp'].forEach(l=>state.maxes[l]=+document.getElementById(l+'1').value);save();render();go('home')}
+function exportData(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='forge-data.json';a.click()}
+function resetData(){if(confirm('Reset all Forge data?')){localStorage.removeItem('forgeState');location.reload()}}
+if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+render();
+</script>
 </body>
 </html>
