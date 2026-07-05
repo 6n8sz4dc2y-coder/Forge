@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Barry PRS v1.3</title>
+<title>StrengthOS v1.3</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b0d10">
 <style>
@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">BARRY PRS</div><div class="sub">Strength Programming • v1.2</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v1.2</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -31,8 +31,8 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="workout">🏋️<br>Workout</button><button data-tab="programme">📅<br>Programme</button><button data-tab="progress">📈<br>Progress</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='barry-prs-v1.3';
-const DEFAULT={oneRMs:{deadlift:157,bench:107,squat:123,ohp:91},position:0,history:[],prs:[],settings:{mode:'Strict',roundTo:2.5,goalTotal:500,accessoryMode:'Barry',autoRest:true}};
+const VERSION='strengthos-v1.3';
+const DEFAULT={oneRMs:{deadlift:157,bench:107,squat:123,ohp:91},position:0,history:[],prs:[],settings:{mode:'Strict',roundTo:2.5,goalTotal:500,accessoryMode:'StrengthOS',autoRest:true}};
 const LIFTS={deadlift:'Deadlift',bench:'Bench',squat:'Squat',ohp:'Viking Press'};
 function r25(x){const step=state.settings.roundTo||2.5;return Math.round(x/step)*step}
 function fmt(x){return Number.isInteger(x)?String(x):x.toFixed(1).replace('.0','')}
@@ -123,7 +123,7 @@ function repsToBeat(lift,weight){const max=Number(state.oneRMs[lift]||0);weight=
 function restSecondsFor(type,kind){if(kind==='accessory')return 90;if(type==='Speed')return 60;if(type==='Rep')return 90;if(type==='Strength'||type==='Power')return 180;return 120}
 let restInterval=null, restLeft=0;
 function startRest(seconds){if(!state.settings.autoRest)return;restLeft=seconds;drawTimer();document.getElementById('restTimer').classList.add('show');clearInterval(restInterval);restInterval=setInterval(()=>{restLeft--;drawTimer();if(restLeft<=0){clearInterval(restInterval);document.getElementById('restTimer').classList.remove('show');toast('Rest complete')}} ,1000)}
-function drawTimer(){const el=document.getElementById('restTimer');const m=Math.floor(restLeft/60),sec=String(restLeft%60).padStart(2,'0');el.innerHTML=`<div class="row"><div><div class="muted small">Rest timer</div><div class="timer-time">${m}:${sec}</div></div><span class="tag">Barry PRS</span></div><div class="timer-buttons"><button class="btn secondary mini" onclick="skipTimer()">Skip</button><button class="btn secondary mini" onclick="addTimer(30)">+30s</button><button class="btn secondary mini" onclick="addTimer(-30)">-30s</button></div>`}
+function drawTimer(){const el=document.getElementById('restTimer');const m=Math.floor(restLeft/60),sec=String(restLeft%60).padStart(2,'0');el.innerHTML=`<div class="row"><div><div class="muted small">Rest timer</div><div class="timer-time">${m}:${sec}</div></div><span class="tag">StrengthOS</span></div><div class="timer-buttons"><button class="btn secondary mini" onclick="skipTimer()">Skip</button><button class="btn secondary mini" onclick="addTimer(30)">+30s</button><button class="btn secondary mini" onclick="addTimer(-30)">-30s</button></div>`}
 function skipTimer(){clearInterval(restInterval);document.getElementById('restTimer').classList.remove('show')}
 function addTimer(s){restLeft=Math.max(0,restLeft+s);drawTimer();if(restLeft===0)skipTimer()}
 function scrollNext(el){const next=el?.parentElement?.nextElementSibling;if(next)next.scrollIntoView({behavior:'smooth',block:'center'})}
@@ -143,13 +143,13 @@ function itemWeight(it,setIndex=0){if(it.kind==='benchMirror')return null;if(it.
 function mainSummary(it){if(it.kind==='benchMirror')return `${it.sets} × ${it.reps} • by feel`; if(it.ramp)return it.ramp.map(p=>`${fmt(weightFor(it.lift,p))}×${it.reps}`).join(' / ');return `${it.sets} × ${it.reps} @ ${fmt(weightFor(it.lift,it.pct))}kg (${Math.round(it.pct*1000)/10}%)`}
 function warmups(lift,target){let bar=lift==='ohp'?20:20; let arr=[{w:bar,r:5},{w:r25(target*.45),r:5},{w:r25(target*.65),r:3},{w:r25(target*.8),r:1}]; return arr.filter((x,i,a)=>x.w>0 && (i===0||x.w!==a[i-1].w) && x.w<target)}
 function renderWorkout(){const w=current();let mainItems=w.items.filter(i=>i.kind==='main'||i.kind==='benchMirror');let accItems=w.items.filter(i=>i.kind==='accessory');let firstMain=mainItems.find(i=>i.kind==='main');let target=firstMain?itemWeight(firstMain, firstMain.ramp?firstMain.ramp.length-1:0):null;document.getElementById('workout').innerHTML=`
-<div class="card hero"><div class="muted small">${w.phase} • Block ${w.block} • Day ${w.dayIndex+1}</div><div class="title">${w.title}</div><div class="muted">Barry PRS session</div></div>
+<div class="card hero"><div class="muted small">${w.phase} • Block ${w.block} • Day ${w.dayIndex+1}</div><div class="title">${w.title}</div><div class="muted">StrengthOS session</div></div>
 ${firstMain?`<div class="card"><div class="h2">Warm-up</div>${warmups(firstMain.lift,target).map((s,i)=>setRow(`w${i}`,`${fmt(s.w)}kg × ${s.r}`,false)).join('')}</div>`:''}
 <div class="card"><div class="h2">Main Work</div>${mainItems.map((it,idx)=>mainBlock(it,idx)).join('')}</div>
 <div class="card"><div class="h2">Accessories</div>${accItems.map((it,idx)=>accessoryBlock(it,idx)).join('')}</div>
 <div class="card"><div class="h2">Notes</div><textarea id="sessionNote" class="input note" placeholder="What moved well? Anything to watch?"></textarea><button class="btn green" onclick="finishWorkout()">FINISH WORKOUT</button><button class="btn secondary" onclick="skipForward()">Skip to next workout</button></div>`}
 function setRow(id,txt,done=false,opts={}){const reps=opts.reps||'';const wt=opts.weight||'';const prAttrs=opts.pr?`data-pr-lift="${opts.lift}" data-pr-weight="${wt}"`:'';const target=opts.target?`<div class="prline">${opts.target}</div>`:'';return `<div class="set ${done?'done':''}" id="set-${id}"><button class="check" onclick="toggleSet('${id}',${opts.rest||120})">✓</button><div><b>${txt}</b>${target}</div><div class="repbox">${opts.repInput?`<input ${prAttrs} class="rep-input" id="reps-${id}" inputmode="numeric" placeholder="reps" value="${reps}">`:opts.label||'<span class="muted small">set</span>'}</div></div>`}
-function mainBlock(it,idx){let html=`<div class="listitem"><div class="row"><div><b>${it.label}</b><div class="muted small">${mainSummary(it)}</div>${it.note?`<div class="warn small">${it.note}</div>`:''}</div><span class="tag">${it.type}</span></div>`; if(it.kind==='benchMirror'){for(let s=0;s<it.sets;s++)html+=setRow(`m${idx}-${s}`,`Set ${s+1}: Bench by feel`,false,{repInput:true,reps:it.reps,rest:restSecondsFor(it.type,'main'),label:'reps'});return html+'</div>'} for(let s=0;s<it.sets;s++){let wt=itemWeight(it,s);let pct=it.ramp?` (${Math.round((it.ramp[s]||it.pct)*1000)/10}%)`:'';let isTop=(s===it.sets-1 && (it.type==='Strength'||it.type==='Power'||it.type==='Rep'));let target=isTop?lastSetTargetText(it,wt):'';html+=setRow(`m${idx}-${s}`,`Set ${s+1}: ${fmt(wt)}kg ×`,false,{repInput:true,reps:it.reps,weight:wt,lift:it.lift,pr:isTop,target,rest:restSecondsFor(it.type,'main')})} if(it.type==='Strength'||it.type==='Power')html+=`<div class="warn small">Top set: enter reps. If you beat your estimated 1RM, Barry PRS will offer to update it.</div>`;return html+'</div>'}
+function mainBlock(it,idx){let html=`<div class="listitem"><div class="row"><div><b>${it.label}</b><div class="muted small">${mainSummary(it)}</div>${it.note?`<div class="warn small">${it.note}</div>`:''}</div><span class="tag">${it.type}</span></div>`; if(it.kind==='benchMirror'){for(let s=0;s<it.sets;s++)html+=setRow(`m${idx}-${s}`,`Set ${s+1}: Bench by feel`,false,{repInput:true,reps:it.reps,rest:restSecondsFor(it.type,'main'),label:'reps'});return html+'</div>'} for(let s=0;s<it.sets;s++){let wt=itemWeight(it,s);let pct=it.ramp?` (${Math.round((it.ramp[s]||it.pct)*1000)/10}%)`:'';let isTop=(s===it.sets-1 && (it.type==='Strength'||it.type==='Power'||it.type==='Rep'));let target=isTop?lastSetTargetText(it,wt):'';html+=setRow(`m${idx}-${s}`,`Set ${s+1}: ${fmt(wt)}kg ×`,false,{repInput:true,reps:it.reps,weight:wt,lift:it.lift,pr:isTop,target,rest:restSecondsFor(it.type,'main')})} if(it.type==='Strength'||it.type==='Power')html+=`<div class="warn small">Top set: enter reps. If you beat your estimated 1RM, StrengthOS will offer to update it.</div>`;return html+'</div>'}
 function accessoryBlock(it,idx){let last=lastAccessoryLog(it.name);let lastLine=last?`<div class="muted small">Last time: ${last}</div>`:'';let html=`<div class="listitem accessory ${it.amrap?'amrap':''} ${it.role==='variation'?'variation':''}"><div class="row"><div><b>${it.name}</b><div class="muted small">Target reps: ${it.amrap?'AMRAP':it.reps}${it.totalReps?` • target total ${it.totalReps}`:''}</div>${lastLine}${it.note?`<div class="muted small">${it.note}</div>`:''}</div><span class="tag">${it.role}</span></div>`;let sets=it.amrap?1:(it.sets||3);for(let s=0;s<sets;s++){html+=`<div class="set assist-grid" id="set-a${idx}-${s}"><div><b>${it.amrap?'AMRAP':`Set ${s+1}`}</b><div class="muted small">${it.amrap?'Clean reps to failure':`Target (${it.reps})`}</div></div><input class="assist-input" id="accw-${idx}-${s}" inputmode="decimal" placeholder="kg" data-acc-name="${it.name}" data-acc-set="${s+1}"><input class="assist-input" id="accr-${idx}-${s}" inputmode="numeric" placeholder="reps" data-acc-name="${it.name}" data-acc-set="${s+1}"><button class="check" onclick="toggleSet('a${idx}-${s}',${restSecondsFor('', 'accessory')})">✓</button></div>`}return html+'</div>'}
 function lastAccessoryLog(name){let hist=[...(state.history||[])].reverse();for(const h of hist){let logs=(h.accLogs||[]).filter(x=>x.name===name&&x.weight&&x.reps);if(logs.length)return logs.map(x=>`${fmt(Number(x.weight))}×${x.reps}`).join(' / ')}return ''}
 window.toggleSet=(id,rest=120)=>{const el=document.getElementById('set-'+id);el?.classList.toggle('done');if(el?.classList.contains('done')){startRest(rest);scrollNext(el)}}
@@ -171,7 +171,7 @@ function resetAll(){if(confirm('Reset all Forge data?')){localStorage.removeItem
 function toggleAutoRest(){state.settings.autoRest=!state.settings.autoRest;save();render();toast('Auto rest timer '+(state.settings.autoRest?'on':'off'))}
 function exportData(){const data='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download='forge-export.json';a.click()}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
-try{render();}catch(e){document.getElementById('home').classList.add('active');document.getElementById('home').innerHTML='<div class="card hero"><div class="title">Barry PRS</div><div class="warn">App error: '+e.message+'</div></div>';console.error(e)}
+try{render();}catch(e){document.getElementById('home').classList.add('active');document.getElementById('home').innerHTML='<div class="card hero"><div class="title">StrengthOS</div><div class="warn">App error: '+e.message+'</div></div>';console.error(e)}
 </script>
 </body>
 </html>
