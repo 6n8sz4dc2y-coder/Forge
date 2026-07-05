@@ -13,11 +13,18 @@
 .timer{position:fixed;left:16px;right:16px;bottom:92px;max-width:488px;margin:0 auto;background:#111822;border:1px solid #334052;border-radius:18px;padding:12px;z-index:30;display:none;box-shadow:var(--shadow)}
 .timer.show{display:block}.timer-time{font-size:28px;font-weight:900}.timer .row{gap:8px}.repbox{display:flex;align-items:center;gap:8px}.rep-input{width:76px;background:#090d12;color:#fff;border:1px solid #2a3340;border-radius:12px;padding:9px;text-align:center;font-weight:800}.kg-input{width:90px;background:#090d12;color:#fff;border:1px solid #2a3340;border-radius:12px;padding:9px;text-align:center;font-weight:800}.set-grid{display:grid;grid-template-columns:44px 1fr 92px 44px;align-items:center;gap:8px}.assist-grid{display:grid;grid-template-columns:1fr 84px 76px 44px;align-items:center;gap:8px}.assist-input{width:100%;background:#090d12;color:#fff;border:1px solid #2a3340;border-radius:12px;padding:9px;text-align:center;font-weight:800}.graph{width:100%;height:150px;background:#0b0f14;border:1px solid #202833;border-radius:14px;margin-top:10px}.graph-label{font-size:11px;fill:#9aa4b2}.graph-line{fill:none;stroke:#f04444;stroke-width:3}.graph-dot{fill:#f04444}.bar{fill:#5aa6ff;opacity:.85}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.legend span{font-size:11px;color:#9aa4b2}.prline{margin-top:8px;font-size:12px;color:#ffd98a}.badge-pr{display:inline-flex;background:#3a1b10;border:1px solid #ff8e5a;color:#ffd5b6;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;margin-top:6px}.set.done input{opacity:.8}.complete-big{font-size:20px}.timer-buttons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.timer-buttons button{margin:0}
 
+
+.club-card .club-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.club-ring{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;flex:0 0 92px;background:conic-gradient(var(--red) calc(var(--pct)*1%), #26303c 0);box-shadow:0 0 0 1px rgba(255,255,255,.04) inset}
+.club-ring::before{content:"";position:absolute;width:66px;height:66px;border-radius:50%;background:#0c1015;border:1px solid #222b36}
+.club-ring b{position:relative;font-size:20px;z-index:1}
+.club-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+@media(max-width:420px){.club-ring{width:78px;height:78px;flex-basis:78px}.club-ring::before{width:56px;height:56px}.club-ring b{font-size:17px}.club-metrics{grid-template-columns:1fr 1fr}.club-metrics .metric:last-child{grid-column:1 / -1}}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v1.3</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v1.4</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -134,10 +141,9 @@ function handlePRs(prs){if(!prs.length)return [];let accepted=[];prs.forEach(pr=
 
 function renderHome(){const w=current();const totalKg=powerTotal();const goal=state.settings.goalTotal||500;const remaining=Math.max(0,goal-totalKg);const pct=Math.min(100,Math.round(totalKg/goal*100));document.getElementById('home').innerHTML=`
 <div class="card hero"><div class="row"><div><div class="muted small">Today</div><div class="title">${w.title}</div><div class="muted">${w.phase} • Block ${w.block} • Workout ${state.position+1} / ${PROGRAMME.length}</div></div><span class="tag">${state.position+1}/${PROGRAMME.length}</span></div><button class="btn" onclick="nav('workout')">START WORKOUT</button></div>
-<div class="card"><div class="row"><div><div class="h2">500kg Club</div><div class="muted small">Power total: Deadlift + Squat + Bench only</div></div><b>${pct}%</b></div><div class="grid"><div class="metric"><b>${fmt(totalKg)}kg</b><span>Power total</span></div><div class="metric"><b>${fmt(goal)}kg</b><span>Target</span></div><div class="metric"><b>${fmt(remaining)}kg</b><span>Remaining</span></div></div><div class="progressbar"><i style="width:${pct}%"></i></div></div>
-<div class="grid">${['deadlift','squat','bench'].map(l=>`<div class="metric"><b>${fmt(state.oneRMs[l])}</b><span>${LIFTS[l]} 1RM</span><br><span>Campbell Max ${fmt(cm(l))}kg</span></div>`).join('')}</div>
-<div class="grid"><div class="metric"><b>${fmt(state.oneRMs.ohp)}</b><span>${LIFTS.ohp} 1RM</span><br><span>Tracked separately • Campbell Max ${fmt(cm('ohp'))}kg</span></div><div class="metric"><b>${fmt(total())}kg</b><span>All four lifts</span><br><span>Includes Viking Press</span></div></div>
-<div class="card"><div class="h2">Next workout</div>${nextSummary()}</div><div class="card"><div class="h2">Last workout</div>${state.history.length?histSummary(state.history[state.history.length-1]):'<div class="muted">No workouts completed yet.</div>'}</div>`}
+<div class="card club-card"><div class="club-head"><div><div class="h2">500kg Club</div><div class="muted small">Power total: Deadlift + Squat + Bench only</div></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div><div class="club-metrics"><div class="metric"><b>${fmt(totalKg)}kg</b><span>Power total</span></div><div class="metric"><b>${fmt(goal)}kg</b><span>Target</span></div><div class="metric"><b>${fmt(remaining)}kg</b><span>Remaining</span></div></div></div>
+	<div class="grid">${['deadlift','squat','bench','ohp'].map(l=>`<div class="metric"><b>${fmt(state.oneRMs[l])}</b><span>${LIFTS[l]} 1RM</span><br><span>${l==='ohp'?'Tracked separately • ':''}Campbell Max ${fmt(cm(l))}kg</span></div>`).join('')}</div>
+	<div class="card"><div class="h2">Next workout</div>${nextSummary()}</div><div class="card"><div class="h2">Last workout</div>${state.history.length?histSummary(state.history[state.history.length-1]):'<div class="muted">No workouts completed yet.</div>'}</div>`}
 function nextSummary(){const n=PROGRAMME[Math.min(state.position+1,PROGRAMME.length-1)];return n?`<b>${n.title}</b><div class="muted small">${n.phase} • Block ${n.block} • Workout ${Math.min(state.position+2,PROGRAMME.length)} / ${PROGRAMME.length}</div>`:'<div class="muted">Cycle complete.</div>'}
 function histSummary(h){return `<b>${h.title}</b><div class="muted small">${h.phase} • ${new Date(h.date).toLocaleString()}</div>`}
 function itemWeight(it,setIndex=0){if(it.kind==='benchMirror')return null;if(it.kind!=='main')return null;const pct=it.ramp?it.ramp[setIndex]||it.pct:it.pct;return weightFor(it.lift,pct,false)}
