@@ -1,7 +1,7 @@
 {
-  "name": "StrengthOS v2.3",
+  "name": "StrengthOS v2.4",
   "short_name": "StrengthOS",
-  "start_url": "./?v=strengthos23",
+  "start_url": "./?v=strengthos24",
   "display": "standalone",
   "background_color": "#080a0d",
   "theme_color": "#0b0d10",
@@ -12,5 +12,5 @@
       "type": "image/svg+xml"
     }
   ],
-  "description": "Campbell PRS training app with quick rep entry, smart weights and smoother workout flow."
+  "description": "Campbell PRS training app with evidence-based Coach observations, weekly reviews and transparent trend analysis."
 }
