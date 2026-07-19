@@ -28,6 +28,8 @@
 .settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#0b0f14;border:1px solid #202833;border-radius:14px;padding:12px;margin:8px 0}.toggle{width:auto;margin:0;padding:8px 12px;border-radius:999px}
 
 .quick-notes{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.quick-note{width:auto;margin:0;padding:8px 10px;border-radius:999px;background:#151c25;border:1px solid #303c4b;color:#dce3ec;font-size:12px;font-weight:800}.quick-note.active{background:#3a171b;border-color:var(--red);color:#ffb2b2}.timeline{position:relative;margin-top:10px}.timeline::before{content:"";position:absolute;left:12px;top:8px;bottom:8px;width:2px;background:#2b3542}.timeline-item{position:relative;padding:0 0 16px 34px}.timeline-item:last-child{padding-bottom:0}.timeline-dot{position:absolute;left:5px;top:3px;width:16px;height:16px;border-radius:50%;background:#161d26;border:3px solid var(--red);z-index:1}.timeline-item.pr .timeline-dot{border-color:var(--yellow)}.timeline-item.milestone .timeline-dot{border-color:var(--green)}.timeline-date{font-size:11px;color:var(--muted);margin-bottom:3px}.timeline-title{font-weight:900}.mission-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.mission-stat{background:#0b0f14;border:1px solid #27313e;border-radius:12px;padding:9px}.mission-stat b{font-size:14px;margin:0}.mission-stat span{font-size:11px;color:var(--muted)}
+
+.backup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;display:flex;align-items:flex-end;padding:14px}.backup-panel{width:100%;max-width:680px;margin:0 auto;background:#11151b;border:1px solid #343b46;border-radius:18px;padding:16px;box-shadow:0 -12px 40px rgba(0,0,0,.45)}.backup-text{width:100%;height:220px;margin:14px 0;padding:12px;background:#080a0d;color:#e8edf3;border:1px solid #343b46;border-radius:12px;font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
 </style>
 </head>
 <body>
@@ -46,7 +48,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="workout">🏋️<br>Workout</button><button data-tab="programme">📅<br>Programme</button><button data-tab="progress">📈<br>Progress</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v1.6-mission-notebook-timeline';
+const VERSION='strengthos-v1.6.2-pwa-backup-share';
 const DEFAULT={oneRMs:{deadlift:157,bench:107,squat:123,ohp:91},position:0,history:[],prs:[],settings:{mode:'Strict',roundTo:2.5,goalTotal:500,accessoryMode:'StrengthOS',autoRest:true}};
 const LIFTS={deadlift:'Deadlift',bench:'Bench',squat:'Squat',ohp:'Viking Press'};
 function r25(x){const step=state.settings.roundTo||2.5;return Math.round(x/step)*step}
@@ -205,7 +207,53 @@ function setPos(){let p=Number(document.getElementById('pos').value||1)-1;state.
 function clearHistory(){if(confirm('Clear history but keep maxes and position?')){state.history=[];save();render()}}
 function resetAll(){if(confirm('Reset all Forge data?')){localStorage.removeItem('forgeState');state=load();render()}}
 function toggleAutoRest(){state.settings.autoRest=!state.settings.autoRest;save();render();toast('Auto rest timer '+(state.settings.autoRest?'on':'off'))}
-function exportData(){const data='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(state,null,2));const a=document.createElement('a');a.href=data;a.download='StrengthOS-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click()}
+async function exportData(){
+  const json=JSON.stringify(state,null,2);
+  const filename='StrengthOS-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  const file=new File([json],filename,{type:'application/json'});
+  try{
+    if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
+      await navigator.share({title:'StrengthOS backup',text:'StrengthOS workout-data backup',files:[file]});
+      toast('Backup shared');
+      return;
+    }
+  }catch(e){
+    if(e && e.name==='AbortError')return;
+    console.warn('File share failed',e);
+  }
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(json);
+      showBackupFallback(json,filename,true);
+      return;
+    }
+  }catch(e){console.warn('Clipboard backup failed',e)}
+  try{
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=filename;a.style.display='none';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast('Backup downloaded');
+  }catch(e){showBackupFallback(json,filename,false)}
+}
+function showBackupFallback(json,filename,copied){
+  let modal=document.getElementById('backupFallback');
+  if(modal)modal.remove();
+  modal=document.createElement('div');
+  modal.id='backupFallback';
+  modal.className='backup-overlay';
+  modal.innerHTML=`<div class="backup-panel"><div class="row"><div><div class="h2">Backup ready</div><div class="muted small">${copied?'Copied to clipboard. Paste it into Notes or a text file and keep it safe.':'Select all and copy this backup into Notes or a text file.'}</div></div><button class="btn secondary mini" onclick="closeBackupFallback()">Close</button></div><textarea id="backupText" class="backup-text" readonly></textarea><div class="two-buttons"><button class="btn secondary" onclick="copyBackupText()">Copy backup</button><button class="btn" onclick="selectBackupText()">Select all</button></div><div class="muted small">Suggested filename: ${filename}</div></div>`;
+  document.body.appendChild(modal);
+  document.getElementById('backupText').value=json;
+}
+async function copyBackupText(){
+  const el=document.getElementById('backupText');if(!el)return;
+  try{await navigator.clipboard.writeText(el.value);toast('Backup copied')}catch(e){el.focus();el.select();document.execCommand('copy');toast('Backup copied')}
+}
+function selectBackupText(){const el=document.getElementById('backupText');if(el){el.focus();el.select();el.setSelectionRange(0,el.value.length)}}
+function closeBackupFallback(){document.getElementById('backupFallback')?.remove()}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 try{render();}catch(e){document.getElementById('home').classList.add('active');document.getElementById('home').innerHTML='<div class="card hero"><div class="title">StrengthOS</div><div class="warn">App error: '+e.message+'</div></div>';console.error(e)}
 </script>
