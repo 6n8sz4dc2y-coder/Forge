@@ -1,7 +1,7 @@
 {
-  "name": "StrengthOS v2.8",
+  "name": "StrengthOS v2.9",
   "short_name": "StrengthOS",
-  "start_url": "./?v=strengthos28",
+  "start_url": "./?v=strengthos29",
   "display": "standalone",
   "background_color": "#080a0d",
   "theme_color": "#0b0d10",
@@ -12,5 +12,5 @@
       "type": "image/svg+xml"
     }
   ],
-  "description": "Campbell PRS training app with workout ratings, session trends, workout recovery and evidence-based coaching."
+  "description": "Campbell PRS training app with workout pause and reset controls, workout ratings, recovery and coaching."
 }
