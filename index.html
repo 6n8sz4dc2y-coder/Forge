@@ -96,7 +96,7 @@
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v2.7</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v2.7.1</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -111,7 +111,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v2.7-workout-flow';
+const VERSION='strengthos-v2.7.1-programme-correction';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
@@ -133,57 +133,57 @@ function acc2(name,reps,total,opts={}){let n=displayName(name); let o={...opts};
 const PHASES=[
 {name:'Phase 1',desc:'Average intensity / average volume',blocks:[
  {block:1,days:[
-  {title:'Deadlift Speed Day',items:[main('deadlift','Speed',.625,2,14),acc2('Deficit Deadlift',5,20,{role:'variation'}),acc2('Paused Squat',8,24,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Pull Ups','Failure','',{amrap:true})]},
+  {title:'Deadlift Speed Day',items:[main('deadlift','Speed',.625,2,14),acc2('Deficit Deadlift',5,20,{role:'variation'}),acc2('Back Squats',8,24),acc2('Pull Ups','Failure','',{amrap:true})]},
   {title:'Bench Rep Day',items:[main('bench','Rep',.8,6,18),acc2('Close Grip Bench','6 to 10',32,{role:'variation',note:'Straight after bench.'}),acc2('Incline DB Bench','8 to 15',''),acc2('Tricep Pushdown','10 to 15','')]},
   {title:'Squat Strength Day',items:[main('squat','Strength',.85,3,9),acc2('Front Squat','6 to 10',24,{role:'variation'}),acc2('GHR',10,''),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Speed Day',items:[benchMirror('Rep',6,18),acc2('Incline BB Bench','6 to 10',32),main('ohp','Speed',.65,2,10,'Viking Press Speed Day'),acc2('Tricep Extension','6 to 10','')]}
  ]},
  {block:2,days:[
-  {title:'Deadlift Rep Day',items:[main('deadlift','Rep',.8,6,18),acc2('Block Pull','3 to 5',16,{role:'variation'}),acc2('Paused Squat',5,15,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Weighted Chin Ups','6 to 10','')]},
+  {title:'Deadlift Rep Day',items:[main('deadlift','Rep',.8,6,18),acc2('Block Pull','3 to 5',16,{role:'variation'}),acc2('Back Squats',5,15),acc2('Weighted Chin Ups','6 to 10','')]},
   {title:'Bench Strength Day',items:[main('bench','Strength',.85,3,9),acc2('Wide Grip Bench','6 to 10',32,{role:'variation'}),acc2('Dips','10 to 12',''),acc2('Skull Crusher','8 to 10','')]},
   {title:'Squat Speed Day',items:[main('squat','Speed',.65,2,14),acc2('Paused Squat',3,12,{role:'variation'}),acc2('Weighted Hypers','8 to 12',''),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Rep Day',items:[benchMirror('Strength',3,9),acc2('DB Fly','8 to 12',''),main('ohp','Rep',.8,6,18,'Viking Press Rep Day'),acc2('Face Pulls','8 to 12','')]}
  ]},
  {block:3,days:[
-  {title:'Deadlift Strength Day',items:[main('deadlift','Strength',.85,3,9),acc2('Alternate Stance Deadlift',5,20,{role:'variation'}),acc2('Paused Squat',5,15,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Close Grip Pull Down','8 to 12','')]},
+  {title:'Deadlift Strength Day',items:[main('deadlift','Strength',.85,3,9),acc2('Alternate Stance Deadlift',5,20,{role:'variation'}),acc2('Back Squats',5,15),acc2('Close Grip Pull Down','8 to 12','')]},
   {title:'Bench Speed Day',items:[main('bench','Speed',.65,2,14),acc2('Floor Press','3 to 5',16,{role:'variation'}),acc2('Incline DB Press','8 to 12',''),acc2('Rope Extension','10 to 15','')]},
   {title:'Squat Rep Day',items:[main('squat','Rep',.8,6,18),acc2('Front Squat','3 to 5',16,{role:'variation'}),acc2('Stiff Leg Deficit','8 to 12',30),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Strength Day',items:[benchMirror('Speed',2,14),main('ohp','Strength',.85,3,9,'Viking Press Strength Day'),acc2('Arnold Press','8 to 10',''),acc2('Pec Deck','10 to 15','')]}
  ]}]},
 {name:'Phase 2',desc:'High intensity / low volume',blocks:[
  {block:1,days:[
-  {title:'Deadlift Speed Day',items:[main('deadlift','Speed',.7,2,10),acc2('Deficit Deadlift',5,20,{role:'variation'}),acc2('Paused Squat',8,24,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Pull Ups','Failure','',{amrap:true})]},
+  {title:'Deadlift Speed Day',items:[main('deadlift','Speed',.7,2,10),acc2('Deficit Deadlift',5,20,{role:'variation'}),acc2('Back Squats',8,24),acc2('Pull Ups','Failure','',{amrap:true})]},
   {title:'Bench Rep Day',items:[main('bench','Rep',.825,4,20),acc2('Close Grip Bench','6 to 10',32,{role:'variation',note:'Straight after bench.'}),acc2('Incline DB Bench','8 to 15',''),acc2('Tricep Pushdown','10 to 15','')]},
   {title:'Squat Strength Day',items:[{...main('squat','Strength',.925,2,6),ramp:[.9,.925,.95],sets:3},acc2('Front Squat','6 to 10',18,{role:'variation'}),acc2('GHR',10,''),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Speed Day',items:[benchMirror('Rep',4,20),acc2('Incline BB Bench',5,20),main('ohp','Speed',.7,2,10,'Viking Press Speed Day'),acc2('Tricep Extension','6 to 10','')]}
  ]},
  {block:2,days:[
-  {title:'Deadlift Rep Day',items:[main('deadlift','Rep',.825,4,20),acc2('Block Pull','3 to 5',12,{role:'variation'}),acc2('Paused Squat',5,15,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Weighted Chin Ups','6 to 10','')]},
+  {title:'Deadlift Rep Day',items:[main('deadlift','Rep',.825,4,20),acc2('Block Pull','3 to 5',12,{role:'variation'}),acc2('Back Squats',5,15),acc2('Weighted Chin Ups','6 to 10','')]},
   {title:'Bench Strength Day',items:[{...main('bench','Strength',.925,2,6),ramp:[.9,.925,.95],sets:3},acc2('Incline Barbell Bench','6 to 10',24,{role:'variation'}),acc2('Dips','10 to 12',''),acc2('Skull Crusher','8 to 10','')]},
   {title:'Squat Speed Day',items:[main('squat','Speed',.7,2,10),acc2('Paused Squat',3,12,{role:'variation'}),acc2('Weighted Hypers','8 to 12',30),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Rep Day',items:[benchMirror('Strength',2,6),acc2('Wide Grip Pause Bench',5,20,{role:'variation'}),main('ohp','Rep',.825,4,20,'Viking Press Rep Day'),acc2('Face Pulls','8 to 12','')]}
  ]},
  {block:3,days:[
-  {title:'Deadlift Strength Day',items:[{...main('deadlift','Strength',.925,2,6),ramp:[.9,.925,.95],sets:3},acc2('Alternate Stance Deadlift',5,20,{role:'variation'}),acc2('Paused Squat','6 to 8',21,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Close Grip Pull Down','8 to 12','')]},
+  {title:'Deadlift Strength Day',items:[{...main('deadlift','Strength',.925,2,6),ramp:[.9,.925,.95],sets:3},acc2('Alternate Stance Deadlift',5,20,{role:'variation'}),acc2('Back Squats','6 to 8',21),acc2('Close Grip Pull Down','8 to 12','')]},
   {title:'Bench Speed Day',items:[main('bench','Speed',.7,2,10),acc2('Floor Press','3 to 5',12,{role:'variation'}),acc2('Incline DB Press','8 to 12',''),acc2('Rope Extension','10 to 15','')]},
   {title:'Squat Rep Day',items:[main('squat','Rep',.825,4,20),acc2('Front Squat','3 to 5',16,{role:'variation'}),acc2('Stiff Leg Deficit','8 to 12',30),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Strength Day',items:[benchMirror('Speed',2,10),acc2('Close Grip Bench',6,18,{role:'variation',note:'Straight after bench.'}),{...main('ohp','Strength',.925,2,6,'Viking Press Strength Day'),ramp:[.9,.925,.95],sets:3},acc2('Tricep Extension','10 to 15','')]}
  ]}]},
 {name:'Phase 3',desc:'Low intensity / high volume',blocks:[
  {block:1,days:[
-  {title:'Deadlift Speed Day',items:[main('deadlift','Speed',.625,3,21),acc2('Deficit Deadlift',5,20,{role:'variation'}),acc2('Paused Squat',8,24,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Pull Ups','Failure','',{amrap:true})]},
+  {title:'Deadlift Speed Day',items:[main('deadlift','Speed',.625,3,21),acc2('Deficit Deadlift',5,20,{role:'variation'}),acc2('Back Squats',8,24),acc2('Pull Ups','Failure','',{amrap:true})]},
   {title:'Bench Rep Day',items:[main('bench','Rep',.775,6,18),acc2('Close Grip Bench','6 to 10',32,{role:'variation',note:'Straight after bench.'}),acc2('Incline DB Bench','8 to 15',''),acc2('Tricep Pushdown','10 to 15','')]},
   {title:'Squat Strength Day',items:[main('squat','Strength',.8,3,15),acc2('Front Squat','6 to 10',24,{role:'variation'}),acc2('GHR',10,''),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Speed Day',items:[benchMirror('Rep',6,18),acc2('Wide Grip Paused Bench','3 to 5',16,{role:'variation'}),main('ohp','Speed',.625,3,21,'Viking Press Speed Day'),acc2('Tricep Extension','6 to 10','')]}
  ]},
  {block:2,days:[
-  {title:'Deadlift Rep Day',items:[main('deadlift','Rep',.775,6,18),acc2('Block Pull','3 to 5',16,{role:'variation'}),acc2('Paused Squat',8,24,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Weighted Chin Ups','6 to 10','')]},
+  {title:'Deadlift Rep Day',items:[main('deadlift','Rep',.775,6,18),acc2('Block Pull','3 to 5',16,{role:'variation'}),acc2('Back Squats',8,24),acc2('Weighted Chin Ups','6 to 10','')]},
   {title:'Bench Strength Day',items:[main('bench','Strength',.8,3,15),acc2('Incline Barbell Bench','6 to 10',24,{role:'variation'}),acc2('Dips','10 to 12',''),acc2('Skull Crusher','8 to 10','')]},
   {title:'Squat Speed Day',items:[main('squat','Speed',.625,3,21),acc2('Paused Squat',3,12,{role:'variation'}),acc2('Weighted Hypers','8 to 12',''),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Rep Day',items:[benchMirror('Strength',3,15),acc2('DB Fly','8 to 12',''),main('ohp','Rep',.775,6,18,'Viking Press Rep Day'),acc2('Face Pulls','8 to 12','')]}
  ]},
  {block:3,days:[
-  {title:'Deadlift Strength Day',items:[main('deadlift','Strength',.8,3,15),acc2('Alternate Stance Deadlift',5,20,{role:'variation'}),acc2('Paused Squat','6 to 8',21,{role:'variation',note:'Controlled 2–3 second pause. Technique before load.'}),acc2('Close Grip Pull Down','8 to 12','')]},
+  {title:'Deadlift Strength Day',items:[main('deadlift','Strength',.8,3,15),acc2('Alternate Stance Deadlift',5,20,{role:'variation'}),acc2('Back Squats','6 to 8',21),acc2('Close Grip Pull Down','8 to 12','')]},
   {title:'Bench Speed Day',items:[main('bench','Speed',.625,3,21),acc2('Floor Press','3 to 5',16,{role:'variation'}),acc2('Incline DB Press','8 to 12',''),acc2('Rope Extension','10 to 15','')]},
   {title:'Squat Rep Day',items:[main('squat','Rep',.775,6,18),acc2('Front Squat','3 to 5',16,{role:'variation'}),acc2('Stiff Leg Deficit','8 to 12',30),acc2('Incline DB Row','8 to 12','')]},
   {title:'Bench + OHP Strength Day',items:[benchMirror('Speed',3,21),main('ohp','Strength',.8,3,15,'Viking Press Strength Day'),acc2('Arnold Press','8 to 10',''),acc2('Tricep Extension','10 to 15','')]}
