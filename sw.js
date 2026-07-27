@@ -1,4 +1,4 @@
-const CACHE='strengthos-v3.1.2';
+const CACHE='strengthos-v3.1.3';
 const SHELL=['./','./index.html','./manifest.json','./icon.svg'];
 
 self.addEventListener('install',e=>{
