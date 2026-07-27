@@ -1,7 +1,7 @@
 {
-  "name": "StrengthOS v3.1.1",
+  "name": "StrengthOS v3.1.2",
   "short_name": "StrengthOS",
-  "start_url": "./?v=strengthos31",
+  "start_url": "./?v=strengthos312",
   "display": "standalone",
   "background_color": "#080a0d",
   "theme_color": "#0b0d10",
