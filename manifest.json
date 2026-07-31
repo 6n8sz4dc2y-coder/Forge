@@ -1,7 +1,7 @@
 {
-  "name": "StrengthOS v4.0.1",
+  "name": "StrengthOS v4.1",
   "short_name": "StrengthOS",
-  "start_url": "./?v=strengthos401",
+  "start_url": "./?v=strengthos41",
   "display": "standalone",
   "background_color": "#080a0d",
   "theme_color": "#0b0d10",
@@ -12,5 +12,5 @@
       "type": "image/svg+xml"
     }
   ],
-  "description": "StrengthOS v4.0.1 - Personalised Campbell PRS"
+  "description": "Campbell PRS training app with Programme Manager, workout editing, coaching and progress tracking."
 }
