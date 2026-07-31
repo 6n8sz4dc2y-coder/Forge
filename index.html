@@ -257,11 +257,37 @@
  .accordion-card:not(.open) .visual-widget .trend-arrows span{width:20px;height:20px;flex-basis:20px}
 }
 
+/* v6.0.2 compact widget readability */
+#progress.widget-page>.accordion-card:not(.open) .accordion-head-main,
+#coach.widget-page>.accordion-card:not(.open) .accordion-head-main{padding-right:16px}
+.accordion-card:not(.open) .visual-widget{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;overflow:visible}
+.accordion-card:not(.open) .visual-widget .visual-main{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px;align-items:center;overflow:visible}
+.accordion-card:not(.open) .visual-widget .visual-main>div:last-child{min-width:0;overflow:visible}
+.accordion-card:not(.open) .visual-widget .visual-number{font-size:clamp(23px,7vw,30px);line-height:1;white-space:nowrap;overflow:visible;text-overflow:clip;max-width:none;letter-spacing:-.02em}
+.accordion-card:not(.open) .visual-widget .visual-caption{font-size:8.5px;line-height:1.18;max-width:none;overflow-wrap:normal;word-break:normal;hyphens:none;white-space:normal;letter-spacing:.075em}
+.accordion-card:not(.open) .visual-widget .visual-icon{width:36px;height:36px;flex-basis:36px}
+.accordion-card:not(.open) .visual-widget .mini-ring{width:42px;height:42px;flex-basis:42px}
+.accordion-card:not(.open) .visual-widget .mini-ring:before{width:30px;height:30px}
+.accordion-card:not(.open) .visual-widget .spark{width:58px;max-width:none;height:32px}
+.accordion-card:not(.open) .visual-widget .progress-mini{width:62px;flex-basis:62px}
+.accordion-card:not(.open) .visual-widget .progress-mini small{font-size:8px;white-space:nowrap}
+.accordion-card:not(.open) .visual-widget .journey-dots{max-width:62px}
+.accordion-card:not(.open) .visual-widget .stars{font-size:16px;white-space:nowrap}
+@media(max-width:380px){
+ .accordion-card:not(.open) .visual-widget{gap:6px}
+ .accordion-card:not(.open) .visual-widget .visual-main{gap:7px}
+ .accordion-card:not(.open) .visual-widget .visual-number{font-size:22px}
+ .accordion-card:not(.open) .visual-widget .visual-caption{font-size:8px;letter-spacing:.06em}
+ .accordion-card:not(.open) .visual-widget .visual-icon{width:34px;height:34px;flex-basis:34px}
+ .accordion-card:not(.open) .visual-widget .spark{width:50px}
+ .accordion-card:not(.open) .visual-widget .progress-mini{width:55px;flex-basis:55px}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v6.0.1</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v6.0.2</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -276,7 +302,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v6.0.1-compact-widget-fix';
+const VERSION='strengthos-v6.0.2-readable-compact-widgets';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
