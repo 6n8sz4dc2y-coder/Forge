@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>StrengthOS v4.0</title>
+<title>StrengthOS v4.0.1</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b0d10">
 <style>
@@ -106,7 +106,7 @@
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v4.0</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v4.0.1</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -121,7 +121,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v4.0-personalised-campbell-prs';
+const VERSION='strengthos-v4.0.1-personalised-campbell-prs-fix';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
@@ -143,6 +143,7 @@ function setsFrom(total,reps){if(!total||!reps||isNaN(+reps))return 0;return Mat
 function main(lift,type,pct,reps,total,label){return {kind:'main',lift,type,label:label||`${LIFTS[lift]} ${type}`,pct,reps:String(reps),sets:setsFrom(total,reps),totalReps:total}}
 function acc(name,reps,total,opts={}){return {kind:'accessory',name,reps:String(reps||''),sets:setsFrom(total,parseInt(reps))||opts.sets||3,totalReps:total||'',role:opts.role||'assistance',amrap:!!opts.amrap,note:opts.note||''}}
 function benchMirror(type,reps,total){return {kind:'benchMirror',lift:'bench',type,label:`Bench ${type} Day`,reps:String(reps),sets:setsFrom(total,reps),totalReps:total,note:'Second weekly bench: mirror first bench day. Touch-and-go; choose by feel. PR only on corresponding strength days.'}}
+let state=load();
 function displayName(n){
  const map=state?.settings?.exerciseSubstitutions||DEFAULT_SUBSTITUTIONS;
  const replacement=String(map[n]||'').trim();
@@ -210,7 +211,6 @@ const PHASES=[
 ];
 function flatten(){const arr=[];PHASES.forEach((p,pi)=>p.blocks.forEach((b,bi)=>b.days.forEach((d,di)=>arr.push({phaseIndex:pi,block:b.block,dayIndex:di,globalIndex:arr.length,phase:p.name,desc:p.desc,title:d.title,items:d.items})))); return arr}
 const PROGRAMME=flatten();
-let state=load();
 let selectedSessionRating=0;
 let workoutDraft=loadWorkoutDraft();
 let draftRestoring=false, autosaveTimer=null, restEndAt=Number(workoutDraft?.restEndAt||0);
