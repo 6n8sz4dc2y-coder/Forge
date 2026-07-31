@@ -151,11 +151,29 @@
  #progress.widget-page>.accordion-card:not(.open) .accordion-head,#coach.widget-page>.accordion-card:not(.open) .accordion-head{min-height:116px;padding:12px}
 }
 
+/* v5.0.1 Navigation + Home Dashboard Fix */
+.screen:not(.active){display:none!important}
+#progress.widget-page.active,#coach.widget-page.active{display:grid}
+.home-dashboard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.home-dashboard-grid>*{margin:0;min-width:0}
+.home-dashboard-grid .widget-wide{grid-column:1/-1}
+.home-dashboard-grid .coach-snapshot{grid-column:1/-1}
+.home-compact-club{min-height:138px}
+.home-compact-club .club-ring{width:78px;height:78px;flex-basis:78px}
+.home-compact-club .club-ring::before{width:56px;height:56px}
+.home-compact-club .club-ring b{font-size:16px}
+.home-quick-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+.home-quick-strip button{margin:0;min-height:62px;padding:10px 5px;font-size:11px}
+.home-quick-strip button span{display:block;font-size:18px;margin-bottom:4px}
+.home-summary-card{min-height:118px}
+.home-summary-card b{font-size:22px;display:block;margin-top:8px}
+@media(max-width:390px){.home-dashboard-grid{gap:8px}.home-quick-strip{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v5.0</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v5.0.1</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -170,7 +188,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v5.0-widget-dashboard';
+const VERSION='strengthos-v5.0.1-navigation-dashboard-fix';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
@@ -307,7 +325,7 @@ function lastLogsForExercise(name){const key=String(name||'').toLowerCase();for(
 function coachAccessoryTarget(it){const prev=lastLogsForExercise(it.name);const top=topTarget(it.reps);if(!prev)return {headline:'Set a baseline',detail:`Log every set of ${it.name} so Coach Mode can prescribe the next target.`};const reps=prev.logs.map(x=>Number(x.reps||0));const weights=prev.logs.map(x=>Number(x.weight||0)).filter(Boolean);const total=reps.reduce((a,b)=>a+b,0);const maxWeight=weights.length?Math.max(...weights):0;if(it.amrap){const best=Math.max(...reps);return {headline:`Target ${best+1}+ reps`,detail:`Last time: ${best} reps. Beat it with the same clean standard.`}}if(top&&reps.length&&reps.every(r=>r>=top)&&maxWeight){return {headline:`Try ${fmt(r25(maxWeight+(state.settings.roundTo||2.5)))}kg`,detail:`You reached the top of the rep range last time. Take the smallest sensible increase.`}}return {headline:`Beat ${total} total reps`,detail:`Repeat around ${maxWeight?fmt(maxWeight)+'kg':'the same load'} and add at least one clean rep across the sets.`}}
 function coachMainTarget(){const fm=firstMainItem();if(!fm)return {headline:'Complete the session',detail:'Keep technique consistent and log the work.'};const topWeight=itemWeight(fm,fm.ramp?fm.ramp.length-1:fm.sets-1);const prev=bestMainLog(lastSameSession(),fm.lift);if(fm.type==='Speed')return {headline:`Own ${fmt(topWeight)}kg`,detail:'Every rep should look the same. Stop chasing fatigue when bar speed drops.'};if(prev&&Number(prev.weight)===Number(topWeight)){return {headline:`Target ${Number(prev.reps)+1}+ reps at ${fmt(topWeight)}kg`,detail:`Last matching session: ${fmt(Number(prev.weight))}kg × ${prev.reps}. One more clean rep is progress.`}}const beat=repsToBeat(fm.lift,topWeight);return {headline:beat?`${beat}+ reps at ${fmt(topWeight)}kg`:`Complete ${mainSummary(fm)}`,detail:beat?'That result would exceed your current estimated 1RM.':'Execute the programmed work without missed reps.'}}
 function coachBriefingHtml(compact=false){if(state.settings.coachMode===false)return '';const w=current(),mainTarget=coachMainTarget();const accessories=w.items.filter(x=>x.kind==='accessory').slice(0,compact?2:3);return `<div class="card coach-card"><div class="coach-kicker">COACH MODE</div><div class="coach-focus">${esc(mainTarget.headline)}</div><div class="coach-detail">${esc(mainTarget.detail)}</div>${accessories.length?`<div class="coach-targets">${accessories.map(it=>{const t=coachAccessoryTarget(it);return `<div class="coach-target"><b>${esc(it.name)} — ${esc(t.headline)}</b><span>${esc(t.detail)}</span></div>`}).join('')}</div>`:''}</div>`}
-function coachSnapshotHtml(){if(state.settings.coachMode===false)return '';const t=coachMainTarget();return `<button class="coach-snapshot" onclick="showTab('coach')" aria-label="Open Coach tab"><div class="coach-snapshot-main"><div class="coach-snapshot-kicker">COACH SNAPSHOT</div><div class="coach-snapshot-text">${esc(t.headline)} — ${esc(t.detail)}</div></div><div class="coach-snapshot-arrow">›</div></button>`}
+function coachSnapshotHtml(){if(state.settings.coachMode===false)return '';const t=coachMainTarget();return `<button class="coach-snapshot" onclick="nav('coach')" aria-label="Open Coach tab"><div class="coach-snapshot-main"><div class="coach-snapshot-kicker">COACH SNAPSHOT</div><div class="coach-snapshot-text">${esc(t.headline)} — ${esc(t.detail)}</div></div><div class="coach-snapshot-arrow">›</div></button>`}
 function loadPreviousAccessory(idx,name){const prev=lastLogsForExercise(name);if(!prev){toast('No previous performance found');return}prev.logs.forEach((x,i)=>{const w=document.getElementById(`accw-${idx}-${i}`),r=document.getElementById(`accr-${idx}-${i}`);if(w)w.value=x.weight||'';if(r)r.value=x.reps||''});queueWorkoutAutosave();toast('Previous sets loaded')}
 function loadPreviousExtra(id,name){const prev=lastLogsForExercise(name);const ex=extraExercises.find(x=>String(x.id)===String(id));if(!prev||!ex){toast('No previous performance found');return}ex.bodyweight=prev.logs.every(x=>x.bodyweight);ex.sets=prev.logs.map(x=>({weight:x.weight||'',reps:x.reps||''}));renderExtraExercises();queueWorkoutAutosave();toast('Previous sets loaded')}
 
@@ -332,12 +350,26 @@ function handlePRs(prs){if(!prs.length)return [];let accepted=[];prs.forEach(pr=
 
 function clubMilestoneText(total,goal){const milestones=[400,425,450,475,500].filter(x=>x<=goal);const next=milestones.find(x=>total<x);if(!next)return `${fmt(goal)}kg Club achieved`;return `${fmt(next-total)}kg until the ${next}kg Club`}
 function homeWorkoutPlanHtml(){const items=sessionPreviewItems();return `<div class="home-plan"><div class="row"><div class="section-title" style="margin:0">TODAY'S EXERCISES</div><span class="muted small">≈ ${estimatedSessionMinutes()} min</span></div>${items.map((x,i)=>`<div class="home-plan-item"><span>${i+1}</span><div><b>${esc(x.name)}</b><div class="muted small">${esc(x.target)}${x.meta?' • '+esc(x.meta):''}</div></div></div>`).join('')}</div>`}
-function renderHome(){const w=workoutDraft?.custom?PROGRAMME[Math.min(state.position,PROGRAMME.length-1)]:current();const totalKg=powerTotal();const goal=state.settings.goalTotal||500;const pct=Math.min(100,Math.round(totalKg/goal*100));const active=activeWorkoutDraft();const paused=workoutIsPaused();const elapsed=activeWorkoutMinutes();document.getElementById('home').innerHTML=`
-<div class="card hero"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY'}</div><div class="title">${active?esc(workoutDraft.title):w.title}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block} • Workout ${state.position+1} / ${PROGRAMME.length}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+PROGRAMME.length}</span></div>${active?`<div class="mission"><b>${paused?'Timer paused':'Session saved'}</b><span>Started ${new Date(workoutDraft.startedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}. ${paused?'Resume when you are ready; paused time will not count.':'Your completed sets and entries are preserved.'}</span></div>`:`<div class="mission"><b>Today’s Mission</b><span>${missionText()}</span>${missionMeta()}</div>${homeWorkoutPlanHtml()}`}<button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'beginWorkoutDirect()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN TODAY’S WORKOUT'}</button>${active?`<div class="home-workout-controls">${paused?'':`<button class="btn secondary" onclick="pauseWorkout()">PAUSE TIMER</button>`}<button class="btn danger" onclick="resetActiveWorkout()">RESET WORKOUT</button></div>`:`<button class="btn secondary quick-workout-btn" onclick="showQuickWorkoutPicker()">+ ADD AN EXTRA WORKOUT</button>`}</div>
-${coachSnapshotHtml()}
-<div class="card club-card"><div class="club-head"><div><div class="h2">500kg Club</div><div class="muted small">Power total: Deadlift + Squat + Bench only</div></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div><div class="club-metrics"><div class="metric"><b>${fmt(totalKg)}kg</b><span>Power total</span></div><div class="metric"><b>${fmt(goal)}kg</b><span>Target</span></div><div class="metric"><b>${clubMilestoneText(totalKg,goal)}</b><span>Next milestone</span></div></div></div>
-<div class="grid">${['deadlift','squat','bench','ohp'].map(l=>`<div class="metric"><b>${fmt(state.oneRMs[l])}</b><span>${LIFTS[l]} 1RM</span><br><span>${l==='ohp'?'Tracked separately • ':''}Campbell Max ${fmt(cm(l))}kg</span></div>`).join('')}</div>
-<div class="card"><div class="h2">Next workout</div>${nextSummary()}</div><div class="card"><div class="h2">Last workout</div>${state.history.length?histSummary(state.history[state.history.length-1]):'<div class="muted">No workouts completed yet.</div>'}</div>`}
+function renderHome(){
+ const w=workoutDraft?.custom?PROGRAMME[Math.min(state.position,PROGRAMME.length-1)]:current();
+ const totalKg=powerTotal(),goal=state.settings.goalTotal||500,pct=Math.min(100,Math.round(totalKg/goal*100));
+ const active=activeWorkoutDraft(),paused=workoutIsPaused(),elapsed=activeWorkoutMinutes();
+ const week=recentHistory(7),weekVolume=week.reduce((a,h)=>a+(Number(h.volume)||0),0);
+ const ratings=ratingStats(),last=state.history.slice(-1)[0];
+ const next=PROGRAMME[Math.min(state.position+1,PROGRAMME.length-1)];
+ document.getElementById('home').innerHTML=`
+ <div class="card hero home-hero-widget"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY\'S WORKOUT'}</div><div class="title">${active?esc(workoutDraft.title):esc(w.title)}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block} • Workout ${state.position+1} / ${PROGRAMME.length}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+PROGRAMME.length}</span></div>${active?`<div class="mission"><b>${paused?'Timer paused':'Session saved'}</b><span>${paused?'Resume when ready. Paused time will not count.':'Your sets, reps and notes are protected.'}</span></div>`:`<div class="mission"><b>Today’s Mission</b><span>${esc(missionText())}</span></div>${homeWorkoutPlanHtml()}`}<button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'beginWorkoutDirect()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN TODAY’S WORKOUT'}</button>${active?`<div class="home-workout-controls">${paused?'':`<button class="btn secondary" onclick="pauseWorkout()">PAUSE TIMER</button>`}<button class="btn danger" onclick="resetActiveWorkout()">RESET WORKOUT</button></div>`:`<button class="btn secondary quick-workout-btn" onclick="showQuickWorkoutPicker()">+ ADD AN EXTRA WORKOUT</button>`}</div>
+ <div class="home-quick-strip"><button class="quick-action" onclick="nav('programme')"><span>📅</span>Plan</button><button class="quick-action" onclick="nav('progress')"><span>📈</span>Progress</button><button class="quick-action" onclick="nav('coach')"><span>🎯</span>Coach</button><button class="quick-action" onclick="nav('settings')"><span>⚙️</span>Settings</button></div>
+ <div class="home-dashboard-grid">
+ ${coachSnapshotHtml()}
+ <div class="card club-card home-compact-club widget-wide"><div class="club-head"><div><div class="h2">500kg Club</div><div class="muted small">Deadlift + Squat + Bench</div><div class="widget-value">${fmt(totalKg)}kg</div><div class="widget-label">${clubMilestoneText(totalKg,goal)}</div></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div></div>
+ <button class="widget-tile widget-action home-summary-card" onclick="nav('progress')"><span class="widget-kicker">This week</span><span class="widget-value">${week.length}</span><span class="widget-label">workouts • ${fmt(weekVolume)}kg volume</span></button>
+ <button class="widget-tile widget-action home-summary-card" onclick="nav('coach')"><span class="widget-kicker">Session rating</span><span class="widget-value">${ratings.rated.length?ratings.average.toFixed(1)+'★':'—'}</span><span class="widget-label">${ratings.rated.length?ratings.rated.length+' rated sessions':'Rate sessions to build trends'}</span></button>
+ ${['deadlift','squat','bench','ohp'].map(l=>`<button class="widget-tile widget-action home-max-widget" onclick="nav('progress')"><span class="widget-kicker">${esc(LIFTS[l])}</span><span class="widget-value">${fmt(state.oneRMs[l])}kg</span><span class="widget-label">1RM • Campbell max ${fmt(cm(l))}kg</span></button>`).join('')}
+ <button class="widget-tile widget-action home-secondary-widget" onclick="nav('programme')"><span class="widget-kicker">Next workout</span><span class="widget-value" style="font-size:18px">${esc(next?.title||'Cycle complete')}</span><span class="widget-label">${next?`${next.phase} • Block ${next.block}`:'No further workout'}</span></button>
+ <button class="widget-tile widget-action home-secondary-widget" onclick="nav('progress')"><span class="widget-kicker">Last workout</span><span class="widget-value" style="font-size:18px">${last?esc(last.title):'No history yet'}</span><span class="widget-label">${last?`${fmt(last.volume||0)}kg • ${last.rating?starText(last.rating):'Not rated'}`:'Complete a session to begin'}</span></button>
+ </div>`
+}
 function beginWorkoutDirect(){if(activeWorkoutDraft()){resumeWorkout();return}beginWorkoutFromPreview()}
 function showQuickWorkoutPicker(){document.getElementById('quickWorkoutPicker')?.remove();const modal=document.createElement('div');modal.id='quickWorkoutPicker';modal.className='preview-overlay';modal.innerHTML=`<div class="preview-panel"><div class="muted small">ADDITIONAL SESSION</div><div class="title">What are you doing?</div><div class="muted">This will be saved in your history without advancing the programme.</div><div class="quick-type-grid">${['Mobility & Stretching','Pull-ups & Arms','Conditioning','Technique Work','Recovery Session','Custom Workout'].map(x=>`<button class="quick-type" onclick="beginQuickWorkout('${x.replace(/'/g,"\\'")}')">${x}</button>`).join('')}</div><button class="btn secondary" onclick="document.getElementById('quickWorkoutPicker')?.remove()">Cancel</button></div>`;document.body.appendChild(modal)}
 function beginQuickWorkout(type){document.getElementById('quickWorkoutPicker')?.remove();let title=type;if(type==='Custom Workout'){const entered=prompt('Name this workout','Extra Workout');if(entered===null)return;title=entered.trim()||'Extra Workout'}workoutDraft={version:2,position:state.position,title,custom:true,quickType:type,startedAt:new Date().toISOString(),savedAt:new Date().toISOString(),pausedAt:null,totalPausedMs:0,fields:{},completed:[],note:'',extraExercises:[],setCounts:{},restEndAt:0};localStorage.setItem(DRAFT_KEY,JSON.stringify(workoutDraft));extraExercises=[];enableWakeLock();nav('workout');toast('Add your exercises below')}
