@@ -169,11 +169,27 @@
 .home-summary-card b{font-size:22px;display:block;margin-top:8px}
 @media(max-width:390px){.home-dashboard-grid{gap:8px}.home-quick-strip{grid-template-columns:repeat(2,1fr)}}
 
+
+/* v5.1 Today Dashboard */
+.home-greeting{display:flex;justify-content:space-between;align-items:end;margin:4px 2px 12px;gap:12px}
+.home-greeting h1{font-size:22px;margin:0;line-height:1.1}.home-greeting span{font-size:12px;color:var(--muted)}
+.today-hero{padding:18px}.today-hero .title{font-size:28px}.today-cue{font-size:16px;line-height:1.45;margin:14px 0;color:#f2f5f8}
+.today-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.today-meta span{background:#0d131a;border:1px solid #2a3542;border-radius:999px;padding:6px 9px;font-size:11px;color:#c4ceda}
+.home-primary-actions{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:14px}.home-primary-actions .primary-cta{margin:0}.home-primary-actions .quick-workout-btn{margin:0;width:52px;padding:0;font-size:22px}
+.home-metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0}.home-metric-grid>*{margin:0}
+.home-metric{min-height:122px}.home-metric .widget-value{font-size:28px}
+.home-club-widget{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px}.home-club-widget .club-ring{width:72px;height:72px;flex-basis:72px}.home-club-widget .club-ring::before{width:52px;height:52px}.home-club-widget .club-ring b{font-size:15px}
+.home-max-strip{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:9px;overflow-x:auto;padding:0 0 6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.home-max-strip::-webkit-scrollbar{display:none}.home-max-strip .widget-tile{scroll-snap-align:start;min-height:112px}
+.home-upcoming{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.home-upcoming>*{margin:0;min-height:118px}
+.home-upcoming .widget-value{font-size:17px}
+.home-dashboard-grid,.home-quick-strip{display:none!important}
+@media(max-width:390px){.home-max-strip{grid-auto-columns:48%}.home-primary-actions{grid-template-columns:1fr 48px}.home-upcoming{gap:8px}}
+
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v5.0.1</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v5.1</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -188,7 +204,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v5.0.1-navigation-dashboard-fix';
+const VERSION='strengthos-v5.1-today-dashboard';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
@@ -350,27 +366,32 @@ function handlePRs(prs){if(!prs.length)return [];let accepted=[];prs.forEach(pr=
 
 function clubMilestoneText(total,goal){const milestones=[400,425,450,475,500].filter(x=>x<=goal);const next=milestones.find(x=>total<x);if(!next)return `${fmt(goal)}kg Club achieved`;return `${fmt(next-total)}kg until the ${next}kg Club`}
 function homeWorkoutPlanHtml(){const items=sessionPreviewItems();return `<div class="home-plan"><div class="row"><div class="section-title" style="margin:0">TODAY'S EXERCISES</div><span class="muted small">≈ ${estimatedSessionMinutes()} min</span></div>${items.map((x,i)=>`<div class="home-plan-item"><span>${i+1}</span><div><b>${esc(x.name)}</b><div class="muted small">${esc(x.target)}${x.meta?' • '+esc(x.meta):''}</div></div></div>`).join('')}</div>`}
+function homeGreeting(){const h=new Date().getHours();return h<12?'Good morning':h<18?'Good afternoon':'Good evening'}
 function renderHome(){
  const w=workoutDraft?.custom?PROGRAMME[Math.min(state.position,PROGRAMME.length-1)]:current();
  const totalKg=powerTotal(),goal=state.settings.goalTotal||500,pct=Math.min(100,Math.round(totalKg/goal*100));
  const active=activeWorkoutDraft(),paused=workoutIsPaused(),elapsed=activeWorkoutMinutes();
  const week=recentHistory(7),weekVolume=week.reduce((a,h)=>a+(Number(h.volume)||0),0);
- const ratings=ratingStats(),last=state.history.slice(-1)[0];
+ const ratings=ratingStats(),last=state.history.slice(-1)[0],readiness=readinessData();
  const next=PROGRAMME[Math.min(state.position+1,PROGRAMME.length-1)];
+ const minutes=estimatedSessionMinutes();
  document.getElementById('home').innerHTML=`
- <div class="card hero home-hero-widget"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY\'S WORKOUT'}</div><div class="title">${active?esc(workoutDraft.title):esc(w.title)}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block} • Workout ${state.position+1} / ${PROGRAMME.length}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+PROGRAMME.length}</span></div>${active?`<div class="mission"><b>${paused?'Timer paused':'Session saved'}</b><span>${paused?'Resume when ready. Paused time will not count.':'Your sets, reps and notes are protected.'}</span></div>`:`<div class="mission"><b>Today’s Mission</b><span>${esc(missionText())}</span></div>${homeWorkoutPlanHtml()}`}<button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'beginWorkoutDirect()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN TODAY’S WORKOUT'}</button>${active?`<div class="home-workout-controls">${paused?'':`<button class="btn secondary" onclick="pauseWorkout()">PAUSE TIMER</button>`}<button class="btn danger" onclick="resetActiveWorkout()">RESET WORKOUT</button></div>`:`<button class="btn secondary quick-workout-btn" onclick="showQuickWorkoutPicker()">+ ADD AN EXTRA WORKOUT</button>`}</div>
- <div class="home-quick-strip"><button class="quick-action" onclick="nav('programme')"><span>📅</span>Plan</button><button class="quick-action" onclick="nav('progress')"><span>📈</span>Progress</button><button class="quick-action" onclick="nav('coach')"><span>🎯</span>Coach</button><button class="quick-action" onclick="nav('settings')"><span>⚙️</span>Settings</button></div>
- <div class="home-dashboard-grid">
+ <div class="home-greeting"><div><h1>${homeGreeting()}, Gavin.</h1><span>${active?(paused?'Your workout is paused.':'Your workout is in progress.'):`Workout ${state.position+1} of ${PROGRAMME.length} awaits.`}</span></div><span>${active?elapsed+' min':`≈ ${minutes} min`}</span></div>
+ <div class="card hero today-hero"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY'}</div><div class="title">${active?esc(workoutDraft.title):esc(w.title)}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block} • ${state.position+1}/${PROGRAMME.length}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+PROGRAMME.length}</span></div>
+ ${active?`<div class="today-cue">${paused?'Timer paused. Your completed sets and entries are preserved.':'Your session is saved automatically as you train.'}</div>`:`<div class="today-cue">${esc(missionText())}</div><div class="today-meta"><span>${sessionPreviewItems().length} exercises</span><span>≈ ${minutes} minutes</span><span>${readiness.icon} ${esc(readiness.label)}</span></div>`}
+ <div class="home-primary-actions"><button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'beginWorkoutDirect()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN WORKOUT'}</button>${active?'':`<button class="btn secondary quick-workout-btn" aria-label="Add extra workout" onclick="showQuickWorkoutPicker()">＋</button>`}</div>
+ ${active?`<div class="home-workout-controls">${paused?'':`<button class="btn secondary" onclick="pauseWorkout()">PAUSE TIMER</button>`}<button class="btn danger" onclick="resetActiveWorkout()">RESET WORKOUT</button></div>`:''}</div>
  ${coachSnapshotHtml()}
- <div class="card club-card home-compact-club widget-wide"><div class="club-head"><div><div class="h2">500kg Club</div><div class="muted small">Deadlift + Squat + Bench</div><div class="widget-value">${fmt(totalKg)}kg</div><div class="widget-label">${clubMilestoneText(totalKg,goal)}</div></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div></div>
- <button class="widget-tile widget-action home-summary-card" onclick="nav('progress')"><span class="widget-kicker">This week</span><span class="widget-value">${week.length}</span><span class="widget-label">workouts • ${fmt(weekVolume)}kg volume</span></button>
- <button class="widget-tile widget-action home-summary-card" onclick="nav('coach')"><span class="widget-kicker">Session rating</span><span class="widget-value">${ratings.rated.length?ratings.average.toFixed(1)+'★':'—'}</span><span class="widget-label">${ratings.rated.length?ratings.rated.length+' rated sessions':'Rate sessions to build trends'}</span></button>
- ${['deadlift','squat','bench','ohp'].map(l=>`<button class="widget-tile widget-action home-max-widget" onclick="nav('progress')"><span class="widget-kicker">${esc(LIFTS[l])}</span><span class="widget-value">${fmt(state.oneRMs[l])}kg</span><span class="widget-label">1RM • Campbell max ${fmt(cm(l))}kg</span></button>`).join('')}
- <button class="widget-tile widget-action home-secondary-widget" onclick="nav('programme')"><span class="widget-kicker">Next workout</span><span class="widget-value" style="font-size:18px">${esc(next?.title||'Cycle complete')}</span><span class="widget-label">${next?`${next.phase} • Block ${next.block}`:'No further workout'}</span></button>
- <button class="widget-tile widget-action home-secondary-widget" onclick="nav('progress')"><span class="widget-kicker">Last workout</span><span class="widget-value" style="font-size:18px">${last?esc(last.title):'No history yet'}</span><span class="widget-label">${last?`${fmt(last.volume||0)}kg • ${last.rating?starText(last.rating):'Not rated'}`:'Complete a session to begin'}</span></button>
- </div>`
+ <div class="home-metric-grid">
+ <button class="widget-tile widget-action home-metric" onclick="nav('progress')"><span class="widget-kicker">500kg Club</span><div class="home-club-widget"><div><span class="widget-value">${pct}%</span><span class="widget-label">${fmt(totalKg)}kg total<br>${clubMilestoneText(totalKg,goal)}</span></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div></button>
+ <button class="widget-tile widget-action home-metric" onclick="nav('progress')"><span class="widget-kicker">This week</span><span class="widget-value">${fmt(weekVolume)}kg</span><span class="widget-label">${week.length} workouts completed</span></button>
+ <button class="widget-tile widget-action home-metric" onclick="nav('coach')"><span class="widget-kicker">Session rating</span><span class="widget-value">${ratings.rated.length?ratings.average.toFixed(1)+'★':'—'}</span><span class="widget-label">${ratings.rated.length?ratings.rated.length+' rated sessions':'Rate a session to build trends'}</span></button>
+ <button class="widget-tile widget-action home-metric" onclick="nav('coach')"><span class="widget-kicker">Readiness</span><span class="widget-value">${readiness.icon} ${esc(readiness.label)}</span><span class="widget-label">Open Coach for the full briefing</span></button>
+ </div>
+ <div class="section-title">CURRENT 1RMs</div><div class="home-max-strip">${['deadlift','squat','bench','ohp'].map(l=>`<button class="widget-tile widget-action" onclick="nav('progress')"><span class="widget-kicker">${esc(LIFTS[l])}</span><span class="widget-value">${fmt(state.oneRMs[l])}kg</span><span class="widget-label">Campbell max ${fmt(cm(l))}kg</span></button>`).join('')}</div>
+ <div class="home-upcoming"><button class="widget-tile widget-action" onclick="nav('programme')"><span class="widget-kicker">Next workout</span><span class="widget-value">${esc(next?.title||'Cycle complete')}</span><span class="widget-label">${next?`${next.phase} • Block ${next.block}`:'No further workout'}</span></button><button class="widget-tile widget-action" onclick="nav('progress')"><span class="widget-kicker">Last workout</span><span class="widget-value">${last?esc(last.title):'No history yet'}</span><span class="widget-label">${last?`${fmt(last.volume||0)}kg • ${last.rating?starText(last.rating):'Not rated'}`:'Complete a session to begin'}</span></button></div>`
 }
-function beginWorkoutDirect(){if(activeWorkoutDraft()){resumeWorkout();return}beginWorkoutFromPreview()}
+
 function showQuickWorkoutPicker(){document.getElementById('quickWorkoutPicker')?.remove();const modal=document.createElement('div');modal.id='quickWorkoutPicker';modal.className='preview-overlay';modal.innerHTML=`<div class="preview-panel"><div class="muted small">ADDITIONAL SESSION</div><div class="title">What are you doing?</div><div class="muted">This will be saved in your history without advancing the programme.</div><div class="quick-type-grid">${['Mobility & Stretching','Pull-ups & Arms','Conditioning','Technique Work','Recovery Session','Custom Workout'].map(x=>`<button class="quick-type" onclick="beginQuickWorkout('${x.replace(/'/g,"\\'")}')">${x}</button>`).join('')}</div><button class="btn secondary" onclick="document.getElementById('quickWorkoutPicker')?.remove()">Cancel</button></div>`;document.body.appendChild(modal)}
 function beginQuickWorkout(type){document.getElementById('quickWorkoutPicker')?.remove();let title=type;if(type==='Custom Workout'){const entered=prompt('Name this workout','Extra Workout');if(entered===null)return;title=entered.trim()||'Extra Workout'}workoutDraft={version:2,position:state.position,title,custom:true,quickType:type,startedAt:new Date().toISOString(),savedAt:new Date().toISOString(),pausedAt:null,totalPausedMs:0,fields:{},completed:[],note:'',extraExercises:[],setCounts:{},restEndAt:0};localStorage.setItem(DRAFT_KEY,JSON.stringify(workoutDraft));extraExercises=[];enableWakeLock();nav('workout');toast('Add your exercises below')}
 function nextSummary(){const n=PROGRAMME[Math.min(state.position+1,PROGRAMME.length-1)];return n?`<b>${n.title}</b><div class="muted small">${n.phase} • Block ${n.block} • Workout ${Math.min(state.position+2,PROGRAMME.length)} / ${PROGRAMME.length}</div>`:'<div class="muted">Cycle complete.</div>'}
