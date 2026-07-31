@@ -171,6 +171,7 @@
 
 
 /* v5.1 Today Dashboard */
+/* upgraded to v6.0 visual intelligence */
 .home-greeting{display:flex;justify-content:space-between;align-items:end;margin:4px 2px 12px;gap:12px}
 .home-greeting h1{font-size:22px;margin:0;line-height:1.1}.home-greeting span{font-size:12px;color:var(--muted)}
 .today-hero{padding:18px}.today-hero .title{font-size:28px}.today-cue{font-size:16px;line-height:1.45;margin:14px 0;color:#f2f5f8}
@@ -185,11 +186,44 @@
 .home-dashboard-grid,.home-quick-strip{display:none!important}
 @media(max-width:390px){.home-max-strip{grid-auto-columns:48%}.home-primary-actions{grid-template-columns:1fr 48px}.home-upcoming{gap:8px}}
 
+
+/* v6.0 Visual Intelligence */
+.visual-widget{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;min-height:52px}
+.visual-widget .visual-main{display:flex;align-items:center;gap:10px;min-width:0}
+.visual-widget .visual-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#202936;border:1px solid #334153;flex:0 0 auto}
+.visual-widget .visual-number{font-size:24px;font-weight:950;line-height:1;color:#f7f8fb}
+.visual-widget .visual-caption{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.visual-widget .mini-ring{--pct:0;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--pct)*1%),#26303c 0);position:relative;flex:0 0 auto}
+.visual-widget .mini-ring:before{content:'';position:absolute;width:36px;height:36px;border-radius:50%;background:#11161d}
+.visual-widget .mini-ring b{position:relative;font-size:11px;z-index:1}
+.visual-widget .spark{width:82px;height:38px;display:flex;align-items:flex-end;gap:4px;flex:0 0 auto}
+.visual-widget .spark i{display:block;flex:1;min-height:5px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#5ca8ff,#2277d8);opacity:.95}
+.visual-widget .heatmap{display:grid;grid-template-columns:repeat(7,8px);gap:3px;flex:0 0 auto}
+.visual-widget .heatmap i{width:8px;height:8px;border-radius:2px;background:#26303b}.visual-widget .heatmap i.r1{background:#813439}.visual-widget .heatmap i.r2{background:#b96829}.visual-widget .heatmap i.r3{background:#c5a637}.visual-widget .heatmap i.r4{background:#38a95a}.visual-widget .heatmap i.r5{background:#13d45a}
+.visual-widget .stars{font-size:20px;letter-spacing:1px;color:#ffc84d;white-space:nowrap}
+.visual-widget .orb{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8cff9e,#10c83c 48%,#0a6e23 100%);box-shadow:0 0 18px rgba(31,214,83,.25)}
+.visual-widget .trend-arrows{display:flex;gap:5px}.visual-widget .trend-arrows span{width:28px;height:28px;border-radius:9px;background:#202a35;display:grid;place-items:center;font-size:14px}.visual-widget .trend-arrows .up{color:#44d66e}.visual-widget .trend-arrows .flat{color:#f1c34f}.visual-widget .trend-arrows .down{color:#ff6868}
+.visual-widget .progress-mini{width:88px}.visual-widget .progress-mini .track{height:9px;border-radius:99px;background:#26313d;overflow:hidden}.visual-widget .progress-mini .track i{height:100%;display:block;border-radius:99px;background:linear-gradient(90deg,#fa4549,#ff8a5d)}.visual-widget .progress-mini small{display:block;text-align:right;margin-top:5px;color:var(--muted);font-size:10px}
+.visual-widget .journey-dots{display:flex;align-items:center;gap:4px}.visual-widget .journey-dots i{width:8px;height:8px;border-radius:50%;background:#405063}.visual-widget .journey-dots i.on{background:#4f9fff}.visual-widget .journey-dots:after{content:'';height:2px;width:20px;background:#405063;order:-1}
+.visual-widget .medal{font-size:30px;line-height:1}
+.visual-widget .note-stack{position:relative;width:44px;height:38px}.visual-widget .note-stack i{position:absolute;width:30px;height:34px;border-radius:7px;background:#263443;border:1px solid #41536a}.visual-widget .note-stack i:nth-child(1){left:0;top:4px;transform:rotate(-7deg)}.visual-widget .note-stack i:nth-child(2){left:8px;top:1px;transform:rotate(5deg)}
+.accordion-card:not(.open) .accordion-summary{margin-top:4px!important}
+.accordion-card:not(.open) .accordion-head-main{justify-content:flex-start!important}
+.accordion-card:not(.open) .visual-widget{margin-top:auto}
+.accordion-card.open .visual-widget{display:none}
+#progress.widget-page>.accordion-card:not(.open),#coach.widget-page>.accordion-card:not(.open){min-height:148px}
+#progress.widget-page>.accordion-card:not(.open) .accordion-head,#coach.widget-page>.accordion-card:not(.open) .accordion-head{min-height:146px}
+#progress.widget-page>.accordion-card[data-accordion-id="one-rm"],#progress.widget-page>.accordion-card[data-accordion-id="strength-journey"]{background:linear-gradient(160deg,#172131,#10151c)}
+#coach.widget-page>.accordion-card[data-accordion-id="readiness"]{background:linear-gradient(160deg,#14261b,#10171a)}
+#coach.widget-page>.accordion-card[data-accordion-id="goals"]{background:linear-gradient(160deg,#2a2012,#151619)}
+#coach.widget-page>.accordion-card[data-accordion-id="observations"]{background:linear-gradient(160deg,#221a31,#12151b)}
+@media(max-width:380px){.visual-widget .visual-number{font-size:21px}.visual-widget .spark{width:66px}.visual-widget .visual-icon{width:38px;height:38px}}
+
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v5.1</div></div><div class="pill" id="modePill">Strict</div></div>
+  <div class="top"><div><div class="brand">STRENGTHOS</div><div class="sub">Strength Programming • v6.0</div></div><div class="pill" id="modePill">Strict</div></div>
 
   <section id="home" class="screen active"></section>
   <section id="workout" class="screen"></section>
@@ -204,7 +238,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v5.1-today-dashboard';
+const VERSION='strengthos-v6.0-visual-intelligence';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
@@ -499,7 +533,53 @@ function resetDashboardLayout(page){if(!confirm('Reset this page to the default 
 function dashboardDragStart(e,page,id){if(dashboardEditPage!==page){e.preventDefault();return}draggedDashboardCard=id;e.currentTarget.classList.add('dragging');if(e.dataTransfer){e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',id)}}
 function dashboardDragEnd(e){e.currentTarget.classList.remove('dragging');draggedDashboardCard=''}
 function dashboardDrop(e,page,targetId){e.preventDefault();const sourceId=draggedDashboardCard||(e.dataTransfer&&e.dataTransfer.getData('text/plain'));if(!sourceId||sourceId===targetId)return;const root=document.getElementById(page),source=root.querySelector(`[data-accordion-id="${sourceId}"]`),target=root.querySelector(`[data-accordion-id="${targetId}"]`);if(!source||!target)return;const cards=[...root.querySelectorAll('[data-accordion-id]')];root.insertBefore(source,cards.indexOf(source)<cards.indexOf(target)?target.nextSibling:target);persistDashboardDomOrder(page);render()}
-function accordionCard(page,id,title,summary,body,defaultOpen=false){const open=sectionIsOpen(page,id,defaultOpen),editing=dashboardEditPage===page,hidden=(dashboardPageLayout(page).hidden||[]).includes(id);return `<div class="card accordion-card ${open?'open':''} ${hidden?'layout-hidden':''}" data-accordion-id="${esc(id)}" draggable="${editing}" ondragstart="dashboardDragStart(event,'${page}','${id}')" ondragend="dashboardDragEnd(event)" ondragover="event.preventDefault()" ondrop="dashboardDrop(event,'${page}','${id}')"><div class="accordion-head" role="button" tabindex="0" onclick="toggleDashboardSection('${page}','${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDashboardSection('${page}','${id}')}" aria-expanded="${open}"><span class="drag-handle">☷</span><div class="accordion-head-main"><div class="accordion-title">${esc(title)}</div><div class="accordion-summary">${summary}</div></div><div class="layout-controls" onclick="event.stopPropagation()"><button type="button" class="layout-control" title="Move up" onclick="moveDashboardCard('${page}','${id}',-1)">↑</button><button type="button" class="layout-control" title="Move down" onclick="moveDashboardCard('${page}','${id}',1)">↓</button><button type="button" class="layout-control ${hidden?'show':'hide'}" title="${hidden?'Show':'Hide'} card" onclick="toggleDashboardCardHidden('${page}','${id}')">${hidden?'Show':'Hide'}</button></div><span class="accordion-chevron">›</span></div><div class="accordion-body"><div class="accordion-body-inner">${body}</div></div></div>`}
+
+function visualWidget(page,id){
+ try{
+  const hist=state.history||[], last=hist.slice(-1)[0], total=powerTotal(), goal=state.settings.goalTotal||500;
+  const pct=Math.min(100,Math.round(total/goal*100));
+  const icon=(x,n,c)=>`<div class="visual-widget"><div class="visual-main"><div class="visual-icon">${x}</div><div><div class="visual-number">${n}</div><div class="visual-caption">${c}</div></div></div></div>`;
+  if(page==='progress'){
+   if(id==='one-rm'){
+    const vals=[state.oneRMs.squat||0,state.oneRMs.bench||0,state.oneRMs.deadlift||0],m=Math.max(...vals,1);
+    return `<div class="visual-widget"><div class="visual-main"><div><div class="visual-number">${fmt(Math.max(...vals))}kg</div><div class="visual-caption">Top current 1RM</div></div></div><div class="spark">${vals.map(v=>`<i style="height:${Math.max(12,Math.round(v/m*100))}%"></i>`).join('')}</div></div>`;
+   }
+   if(id==='volume'){
+    const v=last?.volume||0, max=Math.max(...hist.map(h=>h.volume||0),1), p=Math.round(v/max*100);
+    return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">🏋️</div><div><div class="visual-number">${(v/1000).toFixed(1)}T</div><div class="visual-caption">Latest session</div></div></div><div class="progress-mini"><div class="track"><i style="width:${p}%"></i></div><small>${p}% of best</small></div></div>`;
+   }
+   if(id==='records') return icon('🥇',Object.keys(exerciseRecordsMap()).length,'Exercise records');
+   if(id==='pr-centre') return `<div class="visual-widget"><div class="visual-main"><div class="medal">🏆</div><div><div class="visual-number">${hist.reduce((n,h)=>n+(h.prs||[]).length,0)}</div><div class="visual-caption">PR updates</div></div></div><div class="journey-dots">${[1,2,3,4,5].map((_,i)=>`<i class="${i<Math.min(5,hist.length)?'on':''}"></i>`).join('')}</div></div>`;
+   if(id==='recovery-calendar'){
+    const days=[];for(let i=27;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);const h=hist.find(x=>new Date(x.date).toDateString()===d.toDateString());days.push(h?.rating||0)}
+    return `<div class="visual-widget"><div class="visual-main"><div><div class="visual-number">${hist.filter(h=>h.rating).length}</div><div class="visual-caption">Rated sessions</div></div></div><div class="heatmap">${days.map(r=>`<i class="${r?'r'+r:''}"></i>`).join('')}</div></div>`;
+   }
+   if(id==='exercise-library') return icon('📚',exerciseLibraryRows().filter(x=>x.totalSets).length,'Exercises tracked');
+   if(id==='strength-journey'){const ls=lifetimeStats();return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">🛤️</div><div><div class="visual-number">${(ls.totalVolume/1000).toFixed(1)}T</div><div class="visual-caption">Lifetime volume</div></div></div><div class="mini-ring" style="--pct:${pct}"><b>${pct}%</b></div></div>`}
+   if(id==='timeline') return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">📍</div><div><div class="visual-number">${hist.length}</div><div class="visual-caption">Journey entries</div></div></div><div class="journey-dots">${[1,2,3,4,5].map((_,i)=>`<i class="${i<Math.min(5,hist.length)?'on':''}"></i>`).join('')}</div></div>`;
+   if(id==='workout-log') return icon('📒',hist.length,'Saved workouts');
+  }
+  if(page==='coach'){
+   const ratings=ratingStats(), week=recentHistory(7), r=readinessData();
+   if(id==='mission') return icon('🎯',current().title.split(' ')[0],"Today's focus");
+   if(id==='readiness') return `<div class="visual-widget"><div class="visual-main"><div class="orb"></div><div><div class="visual-number">${esc(r.label)}</div><div class="visual-caption">Readiness</div></div></div></div>`;
+   if(id==='observations') return icon('🧠',buildCoachObservations().length,'Live observations');
+   if(id==='ratings'){const rounded=Math.round(ratings.average||0);return `<div class="visual-widget"><div><div class="stars">${'★'.repeat(rounded)}${'☆'.repeat(5-rounded)}</div><div class="visual-caption">${ratings.rated.length} rated sessions</div></div><div class="visual-number">${ratings.rated.length?ratings.average.toFixed(1):'—'}</div></div>`}
+   if(id==='weekly') return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">🔥</div><div><div class="visual-number">${week.length}</div><div class="visual-caption">Sessions this week</div></div></div><div><div class="visual-number">${(week.reduce((s,h)=>s+(h.volume||0),0)/1000).toFixed(1)}T</div><div class="visual-caption">Volume</div></div></div>`;
+   if(id==='strength'){
+    const ts=['deadlift','squat','bench','ohp'].map(l=>liftTrend(l));
+    return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">📈</div><div><div class="visual-number">Trends</div><div class="visual-caption">Four main lifts</div></div></div><div class="trend-arrows">${ts.map(t=>`<span class="${t.cls}">${t.cls==='up'?'↑':t.cls==='down'?'↓':'→'}</span>`).join('')}</div></div>`;
+   }
+   if(id==='progression') return icon('⬆️','TM','Progression review');
+   if(id==='goals') return `<div class="visual-widget"><div class="visual-main"><div><div class="visual-number">${fmt(total)}kg</div><div class="visual-caption">Power total</div></div></div><div class="mini-ring" style="--pct:${pct}"><b>${pct}%</b></div></div>`;
+   if(id==='monthly') return icon('🗓️',recentHistory(30).length,'Sessions in 30 days');
+   if(id==='journal') return `<div class="visual-widget"><div class="visual-main"><div class="note-stack"><i></i><i></i></div><div><div class="visual-number">${hist.filter(h=>h.notes).length}</div><div class="visual-caption">Coach notes</div></div></div></div>`;
+  }
+ }catch(e){}
+ return '';
+}
+
+function accordionCard(page,id,title,summary,body,defaultOpen=false){const open=sectionIsOpen(page,id,defaultOpen),editing=dashboardEditPage===page,hidden=(dashboardPageLayout(page).hidden||[]).includes(id);return `<div class="card accordion-card ${open?'open':''} ${hidden?'layout-hidden':''}" data-accordion-id="${esc(id)}" draggable="${editing}" ondragstart="dashboardDragStart(event,'${page}','${id}')" ondragend="dashboardDragEnd(event)" ondragover="event.preventDefault()" ondrop="dashboardDrop(event,'${page}','${id}')"><div class="accordion-head" role="button" tabindex="0" onclick="toggleDashboardSection('${page}','${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDashboardSection('${page}','${id}')}" aria-expanded="${open}"><span class="drag-handle">☷</span><div class="accordion-head-main"><div class="accordion-title">${esc(title)}</div><div class="accordion-summary">${summary}</div>${visualWidget(page,id)}</div><div class="layout-controls" onclick="event.stopPropagation()"><button type="button" class="layout-control" title="Move up" onclick="moveDashboardCard('${page}','${id}',-1)">↑</button><button type="button" class="layout-control" title="Move down" onclick="moveDashboardCard('${page}','${id}',1)">↓</button><button type="button" class="layout-control ${hidden?'show':'hide'}" title="${hidden?'Show':'Hide'} card" onclick="toggleDashboardCardHidden('${page}','${id}')">${hidden?'Show':'Hide'}</button></div><span class="accordion-chevron">›</span></div><div class="accordion-body"><div class="accordion-body-inner">${body}</div></div></div>`}
 
 function allExerciseHistory(){
   const map={};
