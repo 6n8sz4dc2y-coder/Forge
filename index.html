@@ -286,6 +286,88 @@
 
 .programme-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}.programme-tile{background:#0b0f14;border:1px solid #27313e;border-radius:17px;padding:14px}.programme-tile.active-programme{border-color:rgba(53,208,127,.75);box-shadow:inset 0 0 0 1px rgba(53,208,127,.18)}.programme-tile-stats{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:10px 0}.programme-tile-stats span{background:#151c25;border-radius:999px;padding:5px 8px}.programme-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.programme-tabs .btn{margin:0}.programme-builder{max-height:88vh;overflow:auto}.programme-builder textarea{min-height:100px}
 
+
+
+/* v7.0.1.1 stacked compact widget layout */
+#progress.widget-page>.accordion-card:not(.open),
+#coach.widget-page>.accordion-card:not(.open){min-height:178px}
+#progress.widget-page>.accordion-card:not(.open) .accordion-head,
+#coach.widget-page>.accordion-card:not(.open) .accordion-head{min-height:176px;padding:14px}
+.accordion-card:not(.open) .visual-widget{
+ display:flex;
+ flex-direction:column;
+ align-items:stretch;
+ justify-content:flex-start;
+ gap:9px;
+ margin-top:10px;
+ min-height:102px;
+ overflow:hidden;
+}
+.accordion-card:not(.open) .visual-widget .visual-main{
+ display:flex;
+ flex-direction:column;
+ align-items:flex-start;
+ gap:7px;
+ width:100%;
+ min-width:0;
+ overflow:visible;
+}
+.accordion-card:not(.open) .visual-widget .visual-main>div:last-child{width:100%;min-width:0}
+.accordion-card:not(.open) .visual-widget .visual-icon,
+.accordion-card:not(.open) .visual-widget .orb,
+.accordion-card:not(.open) .visual-widget .note-stack,
+.accordion-card:not(.open) .visual-widget .medal{order:0}
+.accordion-card:not(.open) .visual-widget .visual-number{
+ font-size:clamp(26px,7.6vw,34px);
+ line-height:1;
+ white-space:nowrap;
+ overflow:visible;
+ text-overflow:clip;
+ max-width:100%;
+ letter-spacing:-.025em;
+}
+.accordion-card:not(.open) .visual-widget .visual-caption{
+ font-size:9px;
+ line-height:1.22;
+ max-width:100%;
+ white-space:normal;
+ word-break:normal;
+ overflow-wrap:normal;
+ hyphens:none;
+ letter-spacing:.075em;
+}
+.accordion-card:not(.open) .visual-widget>.mini-ring,
+.accordion-card:not(.open) .visual-widget>.spark,
+.accordion-card:not(.open) .visual-widget>.progress-mini,
+.accordion-card:not(.open) .visual-widget>.journey-dots,
+.accordion-card:not(.open) .visual-widget>.heatmap,
+.accordion-card:not(.open) .visual-widget>.trend-arrows{
+ align-self:flex-start;
+ margin-top:0;
+}
+.accordion-card:not(.open) .visual-widget>.spark{width:100%;max-width:150px;height:34px}
+.accordion-card:not(.open) .visual-widget>.progress-mini{width:100%;max-width:145px}
+.accordion-card:not(.open) .visual-widget>.journey-dots{max-width:140px}
+.accordion-card:not(.open) .visual-widget>.heatmap{grid-template-columns:repeat(7,8px);gap:3px}
+.accordion-card:not(.open) .visual-widget>.heatmap i{width:8px;height:8px}
+.accordion-card:not(.open) .visual-widget>.trend-arrows{max-width:100%;overflow:visible}
+.accordion-card:not(.open) .visual-widget>.mini-ring{width:48px;height:48px;flex-basis:48px}
+.accordion-card:not(.open) .visual-widget>.mini-ring:before{width:35px;height:35px}
+.accordion-card:not(.open) .visual-widget>.stars{align-self:flex-start;font-size:18px}
+.accordion-card:not(.open) .visual-widget:not(:has(> .mini-ring)):not(:has(> .spark)):not(:has(> .progress-mini)):not(:has(> .journey-dots)):not(:has(> .heatmap)):not(:has(> .trend-arrows)) .visual-main{
+ flex-direction:row;
+ align-items:center;
+ gap:10px;
+}
+@media(max-width:380px){
+ #progress.widget-page>.accordion-card:not(.open),#coach.widget-page>.accordion-card:not(.open){min-height:170px}
+ #progress.widget-page>.accordion-card:not(.open) .accordion-head,#coach.widget-page>.accordion-card:not(.open) .accordion-head{min-height:168px;padding:12px}
+ .accordion-card:not(.open) .visual-widget{min-height:96px;gap:7px}
+ .accordion-card:not(.open) .visual-widget .visual-number{font-size:25px}
+ .accordion-card:not(.open) .visual-widget>.spark{max-width:125px}
+ .accordion-card:not(.open) .visual-widget>.progress-mini{max-width:120px}
+}
+
 </style>
 </head>
 <body>
@@ -305,7 +387,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="programme">📅<br>Plan</button><button data-tab="progress">📈<br>Progress</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v7.0-programmes';
+const VERSION='strengthos-v7.0.1-programmes';
 const DRAFT_KEY='strengthosWorkoutDraft';
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=1;
