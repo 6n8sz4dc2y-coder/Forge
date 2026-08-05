@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>StrengthOS v4.2</title>
+<title>StrengthOS v7.2.1</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b0d10">
 <style>
@@ -633,7 +633,7 @@ function renderHome(){
  <div class="home-greeting"><div><h1>${homeGreeting()}, Gavin.</h1><span>${active?(paused?'Your workout is paused.':'Your workout is in progress.'):`Workout ${state.position+1} of ${PROGRAMME.length} awaits.`}</span></div><span>${active?elapsed+' min':`≈ ${minutes} min`}</span></div>
  <div class="card hero today-hero"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY'}</div><div class="title">${active?esc(workoutDraft.title):esc(w.title)}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block} • ${state.position+1}/${activeProgrammeLength()}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+activeProgrammeLength()}</span></div>
  ${active?`<div class="today-cue">${paused?'Timer paused. Your completed sets and entries are preserved.':'Your session is saved automatically as you train.'}</div>`:`<div class="today-cue">${esc(missionText())}</div><div class="today-meta"><span>${sessionPreviewItems().length} exercises</span><span>≈ ${minutes} minutes</span><span>${readiness.icon} ${esc(readiness.label)}</span></div>`}
- <div class="home-primary-actions"><button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'beginWorkoutDirect()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN WORKOUT'}</button>${active?'':`<button class="btn secondary quick-workout-btn" aria-label="Add extra workout" onclick="showQuickWorkoutPicker()">＋</button>`}</div>
+ <div class="home-primary-actions"><button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'startWorkout()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN WORKOUT'}</button>${active?'':`<button class="btn secondary quick-workout-btn" aria-label="Add extra workout" onclick="showQuickWorkoutPicker()">＋</button>`}</div>
  ${active?`<div class="home-workout-controls">${paused?'':`<button class="btn secondary" onclick="pauseWorkout()">PAUSE TIMER</button>`}<button class="btn danger" onclick="resetActiveWorkout()">RESET WORKOUT</button></div>`:''}</div>
  ${coachSnapshotHtml()}
  <div class="home-metric-grid">
