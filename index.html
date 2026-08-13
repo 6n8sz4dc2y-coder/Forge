@@ -200,7 +200,7 @@
 .visual-widget .visual-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#202936;border:1px solid #334153;flex:0 0 auto}
 .visual-widget .visual-number{font-size:24px;font-weight:950;line-height:1;color:#f7f8fb}
 .visual-widget .visual-caption{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
-.visual-widget .mini-ring{--pct:0;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--pct)*1%),#26303c 0);position:relative;flex:0 0 auto}
+.visual-widget .mini-ring{--pct:0;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent,var(--red)) calc(var(--pct)*1%),#26303c 0);position:relative;flex:0 0 auto}
 .visual-widget .mini-ring:before{content:'';position:absolute;width:36px;height:36px;border-radius:50%;background:#11161d}
 .visual-widget .mini-ring b{position:relative;font-size:11px;z-index:1}
 .visual-widget .spark{width:82px;height:38px;display:flex;align-items:flex-end;gap:4px;flex:0 0 auto}
@@ -223,7 +223,6 @@
 #progress.widget-page>.accordion-card:not(.open) .accordion-head,#coach.widget-page>.accordion-card:not(.open) .accordion-head{min-height:146px}
 #progress.widget-page>.accordion-card[data-accordion-id="one-rm"],#progress.widget-page>.accordion-card[data-accordion-id="strength-journey"]{background:linear-gradient(160deg,#172131,#10151c)}
 #coach.widget-page>.accordion-card[data-accordion-id="readiness"]{background:linear-gradient(160deg,#14261b,#10171a)}
-#progress.widget-page>.accordion-card[data-accordion-id="goals"]{background:linear-gradient(160deg,#2a2012,#151619)}
 #coach.widget-page>.accordion-card[data-accordion-id="observations"]{background:linear-gradient(160deg,#221a31,#12151b)}
 @media(max-width:380px){.visual-widget .visual-number{font-size:21px}.visual-widget .spark{width:66px}.visual-widget .visual-icon{width:38px;height:38px}}
 
@@ -399,7 +398,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="progress">📈<br>Progress</button><button data-tab="programme">📅<br>Plan</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v7.5-bodyweight-backup';
+const VERSION='strengthos-v7.6-goals-card-fix';
 const PROFILES_KEY='forgeProfiles';
 const ACTIVE_PROFILE_KEY='forgeActiveProfileId';
 function loadProfiles(){try{const raw=JSON.parse(localStorage.getItem(PROFILES_KEY)||'null');if(Array.isArray(raw)&&raw.length)return raw}catch(e){}const legacyState=localStorage.getItem('forgeState');const legacyDraft=localStorage.getItem('strengthosWorkoutDraft');const id='profile-'+Date.now();if(legacyState)localStorage.setItem('forgeState:'+id,legacyState);if(legacyDraft)localStorage.setItem('strengthosWorkoutDraft:'+id,legacyDraft);const profiles=[{id,name:'You'}];localStorage.setItem(PROFILES_KEY,JSON.stringify(profiles));localStorage.setItem(ACTIVE_PROFILE_KEY,id);return profiles}
@@ -862,6 +861,15 @@ function visualWidget(page,id){
     return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">🏋️</div><div><div class="visual-number">${(v/1000).toFixed(1)}T</div><div class="visual-caption">Latest session</div></div></div><div class="progress-mini"><div class="track"><i style="width:${p}%"></i></div><small>${p}% of best</small></div></div>`;
    }
    if(id==='goals') return `<div class="visual-widget"><div class="visual-main"><div><div class="visual-number">${fmt(total)}kg</div><div class="visual-caption">Power total</div></div></div><div class="mini-ring" style="--pct:${pct}"><b>${pct}%</b></div></div>`;
+   if(id==='bodyweight'){
+    const log=(state.bodyweightLog||[]).slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const latest=log[log.length-1];
+    if(!latest)return icon('⚖️','—','Log your weight');
+    if(log.length<2)return icon('⚖️',`${fmt(Number(latest.weight))}kg`,'Latest weight');
+    const recent=log.slice(-6).map(e=>Number(e.weight));
+    const m=Math.max(...recent),mn=Math.min(...recent),range=Math.max(1,m-mn);
+    return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">⚖️</div><div><div class="visual-number">${fmt(Number(latest.weight))}kg</div><div class="visual-caption">Latest weight</div></div></div><div class="spark">${recent.map(v=>`<i style="height:${Math.max(12,Math.round(((v-mn)/range)*100))}%"></i>`).join('')}</div></div>`;
+   }
    if(id==='pr-centre') return `<div class="visual-widget"><div class="visual-main"><div class="medal">🏆</div><div><div class="visual-number">${hist.reduce((n,h)=>n+(h.prs||[]).length,0)}</div><div class="visual-caption">PR updates</div></div></div><div class="journey-dots">${[1,2,3,4,5].map((_,i)=>`<i class="${i<Math.min(5,hist.length)?'on':''}"></i>`).join('')}</div></div>`;
    if(id==='recovery-calendar'){
     const days=[];for(let i=27;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);const h=hist.find(x=>new Date(x.date).toDateString()===d.toDateString());days.push(h?.rating||0)}
