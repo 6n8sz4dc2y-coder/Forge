@@ -140,7 +140,7 @@
 #progress.widget-page>.accordion-card.open,#coach.widget-page>.accordion-card.open{grid-column:1/-1;min-height:0}
 #progress.widget-page>.accordion-card:not(.open) .accordion-head,#coach.widget-page>.accordion-card:not(.open) .accordion-head{min-height:124px;align-items:flex-start;padding:14px;position:relative}
 #progress.widget-page>.accordion-card:not(.open) .accordion-head-main,#coach.widget-page>.accordion-card:not(.open) .accordion-head-main{display:flex;flex-direction:column;height:100%;justify-content:space-between;padding-right:22px}
-#progress.widget-page>.accordion-card:not(.open) .accordion-title,#coach.widget-page>.accordion-card:not(.open) .accordion-title{font-size:14px;line-height:1.2}
+#progress.widget-page>.accordion-card:not(.open) .accordion-title,#coach.widget-page>.accordion-card:not(.open) .accordion-title{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:900;color:var(--muted);line-height:1.3}
 #progress.widget-page>.accordion-card:not(.open) .accordion-summary,#coach.widget-page>.accordion-card:not(.open) .accordion-summary{white-space:normal;overflow:visible;font-size:12px;line-height:1.35;margin-top:16px;color:#c0c9d4}
 #progress.widget-page>.accordion-card:not(.open) .accordion-chevron,#coach.widget-page>.accordion-card:not(.open) .accordion-chevron{position:absolute;right:13px;top:11px}
 #progress.widget-page>.accordion-card.open .accordion-head,#coach.widget-page>.accordion-card.open .accordion-head{padding:15px 16px}
@@ -828,7 +828,6 @@ function visualWidget(page,id){
   }
   if(page==='coach'){
    const r=readinessData();
-   if(id==='mission') return icon('🎯',current().title.split(' ')[0],"Today's focus");
    if(id==='readiness') return `<div class="visual-widget"><div class="visual-main"><div class="orb" style="background:${r.grad}"></div><div><div class="visual-number">${r.pct}%</div><div class="visual-caption">${esc(r.label)} readiness</div></div></div></div>`;
    if(id==='observations') return icon('🧠',buildCoachObservations().length,'Live observations');
    if(id==='progression') return icon('⬆️','TM','Progression review');
