@@ -542,6 +542,29 @@ const PROGRAMME_TEMPLATES=[
   {title:'Holiday Full Body A',items:[acc('Goblet Squat','12',36,{sets:3}),acc('Push Ups','AMRAP','',{sets:3,amrap:true}),acc('DB Row','12',36,{sets:3}),acc('DB Romanian Deadlift','12',36,{sets:3})]},
   {title:'Holiday Upper',items:[acc('DB Shoulder Press','10',30,{sets:3}),acc('Pull Ups','AMRAP','',{sets:3,amrap:true}),acc('DB Floor Press','12',36,{sets:3}),acc('DB Bicep Curl','12',36,{sets:3})]},
   {title:'Holiday Lower + Mobility',items:[acc('Split Squat','10',30,{sets:3}),acc('DB Romanian Deadlift','12',36,{sets:3}),acc('Calf Raise','15',45,{sets:3}),acc('Mobility','10 min','',{sets:1})]}
+ ]},
+ {id:'push-pull-legs',name:'Push Pull Legs',desc:'Six-day high-frequency split for lifters who can train almost daily.',daysPerWeek:6,workouts:[
+  {title:'Push A',items:[acc('Bench Press','5',15,{sets:3}),acc('Viking Press','8',24,{sets:3}),acc('Incline DB Press','10',30,{sets:3}),acc('Lateral Raise','15',45,{sets:3}),acc('Tricep Pushdown','12',36,{sets:3})]},
+  {title:'Pull A',items:[acc('Deadlift','3',9,{sets:3}),acc('Weighted Pull Ups','6',18,{sets:3}),acc('Barbell Row','8',24,{sets:3}),acc('Face Pulls','15',45,{sets:3}),acc('DB Bicep Curl','12',36,{sets:3})]},
+  {title:'Legs A',items:[acc('Back Squat','5',15,{sets:3}),acc('Romanian Deadlift','8',24,{sets:3}),acc('Leg Extension','12',36,{sets:3}),acc('Leg Curl','12',36,{sets:3}),acc('Calf Raise','15',45,{sets:3})]},
+  {title:'Push B',items:[acc('Viking Press','5',15,{sets:3}),acc('Bench Press','8',24,{sets:3}),acc('Flat DB Press','10',30,{sets:3}),acc('Lateral Raise','15',45,{sets:3}),acc('DB Tricep Extension','12',36,{sets:3})]},
+  {title:'Pull B',items:[acc('Weighted Chin Ups','6',18,{sets:3}),acc('Landmine Row','10',30,{sets:3}),acc('Cable Row','10',30,{sets:3}),acc('Face Pulls','15',45,{sets:3}),acc('Hammer Curl','12',36,{sets:3})]},
+  {title:'Legs B',items:[acc('Front Squat','6',18,{sets:3}),acc('Deficit Romanian Deadlift','8',24,{sets:3}),acc('Leg Extension','12',36,{sets:3}),acc('Leg Curl','12',36,{sets:3}),acc('Calf Raise','15',45,{sets:3})]}
+ ]},
+ {id:'novice-full-body',name:'Novice Full Body',desc:'Simple three-day A/B linear progression for a first proper strength programme.',daysPerWeek:3,workouts:[
+  {title:'Full Body A',items:[acc('Back Squat','5',15,{sets:3}),acc('Bench Press','5',15,{sets:3}),acc('Barbell Row','5',15,{sets:3})]},
+  {title:'Full Body B',items:[acc('Back Squat','5',15,{sets:3}),acc('Viking Press','5',15,{sets:3}),acc('Deadlift','5','',{sets:1})]},
+  {title:'Full Body A (repeat)',items:[acc('Back Squat','5',15,{sets:3}),acc('Bench Press','5',15,{sets:3}),acc('Barbell Row','5',15,{sets:3})]}
+ ]},
+ {id:'home-dumbbell-strength',name:'Home Dumbbell Strength',desc:'Three-day strength plan needing nothing but dumbbells and floor space.',daysPerWeek:3,workouts:[
+  {title:'Home Day A',items:[acc('Goblet Squat','10',30,{sets:3}),acc('DB Romanian Deadlift','10',30,{sets:3}),acc('DB Row','10',30,{sets:3}),acc('DB Shoulder Press','10',30,{sets:3}),acc('Plank','45 sec','',{sets:3})]},
+  {title:'Home Day B',items:[acc('DB Split Squat','10',30,{sets:3}),acc('DB Floor Press','10',30,{sets:3}),acc('DB Row','10',30,{sets:3}),acc('DB Bicep Curl','12',36,{sets:3}),acc('Ab Wheel','10',30,{sets:3})]},
+  {title:'Home Day C',items:[acc('DB Romanian Deadlift','10',30,{sets:3}),acc('DB Shoulder Press','10',30,{sets:3}),acc('Farmer Carry','40 m','',{sets:3}),acc('DB Tricep Extension','12',36,{sets:3}),acc('Calf Raise','15',45,{sets:3})]}
+ ]},
+ {id:'tone-and-sculpt',name:'Tone & Sculpt',desc:'Three-day full-body plan for building lean strength and muscle tone. Dumbbells, bands and bodyweight only.',daysPerWeek:3,workouts:[
+  {title:'Lower Body & Core',items:[acc('Goblet Squat','12 to 15','',{sets:3}),acc('DB Romanian Deadlift','12 to 15','',{sets:3}),acc('Glute Bridge','15','',{sets:3}),acc('Calf Raise','15','',{sets:3}),acc('Plank','30 to 45 sec','',{sets:3})]},
+  {title:'Upper Body & Core',items:[acc('DB Shoulder Press','12 to 15','',{sets:3}),acc('DB Row','12 to 15','',{sets:3}),acc('Push Ups','AMRAP','',{sets:3,amrap:true}),acc('Band Pull Aparts','15','',{sets:3}),acc('Ab Wheel','10 to 12','',{sets:3})]},
+  {title:'Full Body Tone',items:[acc('DB Split Squat','12 each leg','',{sets:3}),acc('DB Bicep Curl','12 to 15','',{sets:3}),acc('Tricep Pushdown','12 to 15','',{sets:3}),acc('Glute Bridge','15','',{sets:3}),acc('Farmer Carry','30 to 40 m','',{sets:3})]}
  ]}
 ];
 function activeProgramme(){if((state.activeProgrammeId||'campbell')==='campbell')return {id:'campbell',name:'Campbell PRS',desc:'36-workout Campbell PRS cycle',workouts:null};return (state.customProgrammes||[]).find(p=>p.id===state.activeProgrammeId)||{id:'campbell',name:'Campbell PRS',workouts:null}}
