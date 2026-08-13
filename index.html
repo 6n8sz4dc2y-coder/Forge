@@ -638,8 +638,7 @@ function renderHome(){
  const w=current();
  const totalKg=powerTotal(),goal=state.settings.goalTotal||500,pct=Math.min(100,Math.round(totalKg/goal*100));
  const active=activeWorkoutDraft(),paused=workoutIsPaused(),elapsed=activeWorkoutMinutes();
- const week=recentHistory(7),weekVolume=week.reduce((a,h)=>a+(Number(h.volume)||0),0);
- const ratings=ratingStats(),last=state.history.slice(-1)[0],readiness=readinessData();
+ const last=state.history.slice(-1)[0],readiness=readinessData();
  const apw=activeProgrammeWorkouts(); const next=apw[Math.min(state.position+1,apw.length-1)];
  const minutes=estimatedSessionMinutes();
  document.getElementById('home').innerHTML=`
@@ -651,13 +650,12 @@ function renderHome(){
  ${backupReminderHtml()}
  ${coachSnapshotHtml()}
  <div class="home-metric-grid">
- <button class="widget-tile widget-action home-metric" onclick="nav('progress')"><span class="widget-kicker">500kg Club</span><div class="home-club-widget"><div><span class="widget-value">${pct}%</span><span class="widget-label">${fmt(totalKg)}kg total<br>${clubMilestoneText(totalKg,goal)}</span></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div></button>
- <button class="widget-tile widget-action home-metric" onclick="nav('progress')"><span class="widget-kicker">This week</span><span class="widget-value">${fmt(weekVolume)}kg</span><span class="widget-label">${week.length} workouts completed</span></button>
- <button class="widget-tile widget-action home-metric" onclick="nav('coach')"><span class="widget-kicker">Session rating</span><span class="widget-value">${ratings.rated.length?ratings.average.toFixed(1)+'★':'—'}</span><span class="widget-label">${ratings.rated.length?ratings.rated.length+' rated sessions':'Rate a session to build trends'}</span></button>
- <button class="widget-tile widget-action home-metric" onclick="nav('coach')"><span class="widget-kicker">Readiness</span><span class="widget-value">${readiness.icon} ${esc(readiness.label)}</span><span class="widget-label">Open Coach for the full briefing</span></button>
+ <button class="widget-tile widget-action home-metric" onclick="openDashboardSectionAndNav('progress','one-rm')"><span class="widget-kicker">500kg Club</span><div class="home-club-widget"><div><span class="widget-value">${pct}%</span><span class="widget-label">${fmt(totalKg)}kg total<br>${clubMilestoneText(totalKg,goal)}</span></div><div class="club-ring" style="--pct:${pct}"><b>${pct}%</b></div></div></button>
+ <button class="widget-tile widget-action home-metric" onclick="nav('progress')"><span class="widget-kicker">Last workout</span><span class="widget-value">${last?esc(last.title):'No history yet'}</span><span class="widget-label">${last?`${fmt(last.volume||0)}kg • ${last.rating?starText(last.rating):'Not rated'}`:'Complete a session to begin'}</span></button>
+ <button class="widget-tile widget-action home-metric" onclick="openDashboardSectionAndNav('progress','recovery-calendar')"><span class="widget-kicker">Training Calendar</span>${visualWidget('progress','recovery-calendar')}</button>
+ <button class="widget-tile widget-action home-metric" onclick="openDashboardSectionAndNav('coach','strength')"><span class="widget-kicker">Strength Trends</span><div class="visual-widget"><div class="trend-arrows">${['deadlift','squat','bench','ohp'].map(l=>{const t=liftTrend(l);return `<span class="${t.cls}" title="${esc(LIFTS[l])}: ${esc(t.text)}">${t.cls==='up'?'↑':t.cls==='down'?'↓':'→'}</span>`}).join('')}</div></div></button>
  </div>
- <div class="section-title">CURRENT 1RMs</div><div class="home-max-strip">${['deadlift','squat','bench','ohp'].map(l=>`<button class="widget-tile widget-action" onclick="nav('progress')"><span class="widget-kicker">${esc(LIFTS[l])}</span><span class="widget-value">${fmt(state.oneRMs[l])}kg</span><span class="widget-label">Campbell max ${fmt(cm(l))}kg</span></button>`).join('')}</div>
- <div class="home-upcoming"><button class="widget-tile widget-action" onclick="nav('programme')"><span class="widget-kicker">Next workout</span><span class="widget-value">${esc(next?.title||'Cycle complete')}</span><span class="widget-label">${next?`${next.phase} • Block ${next.block}`:'No further workout'}</span></button><button class="widget-tile widget-action" onclick="nav('progress')"><span class="widget-kicker">Last workout</span><span class="widget-value">${last?esc(last.title):'No history yet'}</span><span class="widget-label">${last?`${fmt(last.volume||0)}kg • ${last.rating?starText(last.rating):'Not rated'}`:'Complete a session to begin'}</span></button></div>`
+ <div class="home-upcoming" style="grid-template-columns:1fr"><button class="widget-tile widget-action" onclick="nav('programme')"><span class="widget-kicker">Next workout</span><span class="widget-value">${esc(next?.title||'Cycle complete')}</span><span class="widget-label">${next?`${next.phase} • Block ${next.block}`:'No further workout'}</span></button></div>`
 }
 
 function showQuickWorkoutPicker(){document.getElementById('quickWorkoutPicker')?.remove();const modal=document.createElement('div');modal.id='quickWorkoutPicker';modal.className='preview-overlay';modal.innerHTML=`<div class="preview-panel"><div class="muted small">ADDITIONAL SESSION</div><div class="title">What are you doing?</div><div class="muted">This will be saved in your history without advancing the programme.</div><div class="quick-type-grid">${['Mobility & Stretching','Pull-ups & Arms','Conditioning','Technique Work','Recovery Session','Custom Workout'].map(x=>`<button class="quick-type" onclick="beginQuickWorkout('${x.replace(/'/g,"\\'")}')">${x}</button>`).join('')}</div><button class="btn secondary" onclick="document.getElementById('quickWorkoutPicker')?.remove()">Cancel</button></div>`;document.body.appendChild(modal)}
@@ -781,6 +779,7 @@ const ACCORDION_KEY='strengthosDashboardSectionsV1';
 function accordionState(){try{return JSON.parse(localStorage.getItem(ACCORDION_KEY)||'{}')}catch(e){return {}}}
 function sectionIsOpen(page,id,defaultOpen=false){const a=accordionState(),k=page+'.'+id;return Object.prototype.hasOwnProperty.call(a,k)?!!a[k]:defaultOpen}
 function toggleDashboardSection(page,id){if(dashboardEditPage===page)return;const a=accordionState(),k=page+'.'+id;a[k]=!sectionIsOpen(page,id,false);localStorage.setItem(ACCORDION_KEY,JSON.stringify(a));render()}
+function openDashboardSectionAndNav(page,id){const a=accordionState();a[page+'.'+id]=true;localStorage.setItem(ACCORDION_KEY,JSON.stringify(a));nav(page);setTimeout(()=>document.querySelector(`#${page} [data-accordion-id="${id}"]`)?.scrollIntoView({behavior:'smooth',block:'start'}),60)}
 function setDashboardSections(page,open){const a=accordionState();const ids=[...document.querySelectorAll('#'+page+' [data-accordion-id]')].map(el=>el.dataset.accordionId);const fallback=page==='progress'?['one-rm','volume','records','timeline','workout-log']:['mission','readiness','observations','ratings','weekly','strength','goals','monthly','journal'];(ids.length?ids:fallback).forEach(id=>a[page+'.'+id]=open);localStorage.setItem(ACCORDION_KEY,JSON.stringify(a));dashboardMenuPage='';render()}
 const DASHBOARD_LAYOUT_KEY='strengthos-dashboard-layout-v1';let dashboardEditPage='';let dashboardMenuPage='';let draggedDashboardCard='';
 function dashboardLayoutState(){try{return JSON.parse(localStorage.getItem(DASHBOARD_LAYOUT_KEY)||'{}')}catch(e){return {}}}
@@ -816,7 +815,8 @@ function visualWidget(page,id){
    if(id==='pr-centre') return `<div class="visual-widget"><div class="visual-main"><div class="medal">🏆</div><div><div class="visual-number">${hist.reduce((n,h)=>n+(h.prs||[]).length,0)}</div><div class="visual-caption">PR updates</div></div></div><div class="journey-dots">${[1,2,3,4,5].map((_,i)=>`<i class="${i<Math.min(5,hist.length)?'on':''}"></i>`).join('')}</div></div>`;
    if(id==='recovery-calendar'){
     const days=[];for(let i=27;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);const h=hist.find(x=>new Date(x.date).toDateString()===d.toDateString());days.push(h?.rating||0)}
-    return `<div class="visual-widget"><div class="visual-main"><div><div class="visual-number">${hist.filter(h=>h.rating).length}</div><div class="visual-caption">Rated sessions</div></div></div><div class="heatmap">${days.map(r=>`<i class="${r?'r'+r:''}"></i>`).join('')}</div></div>`;
+    const rated=hist.filter(h=>h.rating),avg=rated.length?rated.reduce((a,h)=>a+Number(h.rating||0),0)/rated.length:0;
+    return `<div class="visual-widget"><div class="visual-main"><div><div class="visual-number">${rated.length}</div><div class="visual-caption">${avg?`${avg.toFixed(1)}★ avg rating`:'Rated sessions'}</div></div></div><div class="heatmap">${days.map(r=>`<i class="${r?'r'+r:''}"></i>`).join('')}</div></div>`;
    }
    if(id==='exercise-library') return icon('📚',exerciseLibraryRows().filter(x=>x.totalSets).length,'Exercises tracked');
    if(id==='strength-journey'){const ls=lifetimeStats();return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">🛤️</div><div><div class="visual-number">${(ls.totalVolume/1000).toFixed(1)}T</div><div class="visual-caption">Lifetime volume</div></div></div><div class="mini-ring" style="--pct:${pct}"><b>${pct}%</b></div></div>`}
