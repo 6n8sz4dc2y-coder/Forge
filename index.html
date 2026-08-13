@@ -322,8 +322,8 @@
  font-size:clamp(26px,7.6vw,34px);
  line-height:1;
  white-space:nowrap;
- overflow:visible;
- text-overflow:clip;
+ overflow:hidden;
+ text-overflow:ellipsis;
  max-width:100%;
  letter-spacing:-.025em;
 }
@@ -828,7 +828,7 @@ function visualWidget(page,id){
   if(page==='coach'){
    const ratings=ratingStats(), week=recentHistory(7), r=readinessData();
    if(id==='mission') return icon('🎯',current().title.split(' ')[0],"Today's focus");
-   if(id==='readiness') return `<div class="visual-widget"><div class="visual-main"><div class="orb"></div><div><div class="visual-number">${esc(r.label)}</div><div class="visual-caption">Readiness</div></div></div></div>`;
+   if(id==='readiness') return `<div class="visual-widget"><div class="visual-main"><div class="orb"></div><div><div class="visual-number" style="font-size:20px;white-space:normal;line-height:1.15;overflow:visible;text-overflow:clip">${esc(r.label)}</div><div class="visual-caption">Readiness</div></div></div></div>`;
    if(id==='observations') return icon('🧠',buildCoachObservations().length,'Live observations');
    if(id==='ratings'){const rounded=Math.round(ratings.average||0);return `<div class="visual-widget"><div><div class="stars">${'★'.repeat(rounded)}${'☆'.repeat(5-rounded)}</div><div class="visual-caption">${ratings.rated.length} rated sessions</div></div><div class="visual-number">${ratings.rated.length?ratings.average.toFixed(1):'—'}</div></div>`}
    if(id==='weekly') return `<div class="visual-widget"><div class="visual-main"><div class="visual-icon">🔥</div><div><div class="visual-number">${week.length}</div><div class="visual-caption">Sessions this week</div></div></div><div><div class="visual-number">${(week.reduce((s,h)=>s+(h.volume||0),0)/1000).toFixed(1)}T</div><div class="visual-caption">Volume</div></div></div>`;
