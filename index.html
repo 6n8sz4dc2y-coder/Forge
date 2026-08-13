@@ -398,7 +398,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="progress">📈<br>Progress</button><button data-tab="programme">📅<br>Plan</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v7.7-smarter-coach';
+const VERSION='strengthos-v7.8-home-declutter';
 const PROFILES_KEY='forgeProfiles';
 const ACTIVE_PROFILE_KEY='forgeActiveProfileId';
 function loadProfiles(){try{const raw=JSON.parse(localStorage.getItem(PROFILES_KEY)||'null');if(Array.isArray(raw)&&raw.length)return raw}catch(e){}const legacyState=localStorage.getItem('forgeState');const legacyDraft=localStorage.getItem('strengthosWorkoutDraft');const id='profile-'+Date.now();if(legacyState)localStorage.setItem('forgeState:'+id,legacyState);if(legacyDraft)localStorage.setItem('strengthosWorkoutDraft:'+id,legacyDraft);const profiles=[{id,name:'You'}];localStorage.setItem(PROFILES_KEY,JSON.stringify(profiles));localStorage.setItem(ACTIVE_PROFILE_KEY,id);return profiles}
@@ -693,8 +693,8 @@ function renderHome(){
  const isBestWeekEver=weekVolume>0&&weekVolume>=bestWeek;
  const latestPR=[...(state.prs||[])].slice(-1)[0];
  document.getElementById('home').innerHTML=`
- <div class="home-greeting"><div><h1>${homeGreeting()}, ${esc(activeProfileName())}.</h1><span>${active?(paused?'Your workout is paused.':'Your workout is in progress.'):`Workout ${state.position+1} of ${PROGRAMME.length} awaits.`}</span></div><span>${active?elapsed+' min':`≈ ${minutes} min`}</span></div>
- <div class="card hero today-hero"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY'}</div><div class="title">${active?esc(workoutDraft.title):esc(w.title)}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block} • ${state.position+1}/${activeProgrammeLength()}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+activeProgrammeLength()}</span></div>
+ <div class="home-greeting"><div><h1>${homeGreeting()}, ${esc(activeProfileName())}.</h1><span>${active?(paused?'Your workout is paused.':'Your workout is in progress.'):'Your next session is ready.'}</span></div><span>${active?elapsed+' min':`≈ ${minutes} min`}</span></div>
+ <div class="card hero today-hero"><div class="row"><div><div class="muted small">${active?(paused?'WORKOUT PAUSED':'WORKOUT IN PROGRESS'):'TODAY'}</div><div class="title">${active?esc(workoutDraft.title):esc(w.title)}</div><div class="muted">${active&&workoutDraft.custom?'Additional session':`${w.phase} • Block ${w.block}`}</div></div><span class="tag">${active?elapsed+' min':state.position+1+'/'+activeProgrammeLength()}</span></div>
  ${active?`<div class="today-cue">${paused?'Timer paused. Your completed sets and entries are preserved.':'Your session is saved automatically as you train.'}</div>`:`<div class="today-cue">${esc(missionText())}</div><div class="today-meta"><span>${sessionPreviewItems().length} exercises</span><span>≈ ${minutes} minutes</span><span>${readiness.icon} ${readiness.pct}% ready</span></div>`}
  <div class="home-primary-actions"><button class="btn primary-cta ${active?'green':''}" onclick="${active?'resumeWorkout()':'startWorkout()'}">${active?(paused?'RESUME WORKOUT':'RETURN TO WORKOUT'):'BEGIN WORKOUT'}</button>${active?'':`<button class="btn secondary quick-workout-btn" aria-label="Add extra workout" onclick="showQuickWorkoutPicker()">＋</button>`}</div>
  ${active?`<div class="home-workout-controls">${paused?'':`<button class="btn secondary" onclick="pauseWorkout()">PAUSE TIMER</button>`}<button class="btn danger" onclick="resetActiveWorkout()">RESET WORKOUT</button></div>`:''}</div>
