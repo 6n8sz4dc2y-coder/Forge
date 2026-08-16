@@ -399,7 +399,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="progress">📈<br>Progress</button><button data-tab="programme">📅<br>Plan</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v8.10-weekly-backup-reminder';
+const VERSION='strengthos-v8.11-force-fresh-fetch';
 const PROFILES_KEY='forgeProfiles';
 const ACTIVE_PROFILE_KEY='forgeActiveProfileId';
 function loadProfiles(){try{const raw=JSON.parse(localStorage.getItem(PROFILES_KEY)||'null');if(Array.isArray(raw)&&raw.length)return raw}catch(e){}const legacyState=localStorage.getItem('forgeState');const legacyDraft=localStorage.getItem('strengthosWorkoutDraft');const id='profile-'+Date.now();if(legacyState)localStorage.setItem('forgeState:'+id,legacyState);if(legacyDraft)localStorage.setItem('strengthosWorkoutDraft:'+id,legacyDraft);const profiles=[{id,name:'You'}];localStorage.setItem(PROFILES_KEY,JSON.stringify(profiles));localStorage.setItem(ACTIVE_PROFILE_KEY,id);return profiles}
