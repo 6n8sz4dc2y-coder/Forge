@@ -399,7 +399,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="progress">📈<br>Progress</button><button data-tab="programme">📅<br>Plan</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v8.9-profile-switch-readiness-trend';
+const VERSION='strengthos-v8.10-weekly-backup-reminder';
 const PROFILES_KEY='forgeProfiles';
 const ACTIVE_PROFILE_KEY='forgeActiveProfileId';
 function loadProfiles(){try{const raw=JSON.parse(localStorage.getItem(PROFILES_KEY)||'null');if(Array.isArray(raw)&&raw.length)return raw}catch(e){}const legacyState=localStorage.getItem('forgeState');const legacyDraft=localStorage.getItem('strengthosWorkoutDraft');const id='profile-'+Date.now();if(legacyState)localStorage.setItem('forgeState:'+id,legacyState);if(legacyDraft)localStorage.setItem('strengthosWorkoutDraft:'+id,legacyDraft);const profiles=[{id,name:'You'}];localStorage.setItem(PROFILES_KEY,JSON.stringify(profiles));localStorage.setItem(ACTIVE_PROFILE_KEY,id);return profiles}
@@ -414,7 +414,7 @@ async function addProfile(){const name=await askText('New profile name','');if(n
 async function renameProfile(id){const profiles=loadProfiles();const p=profiles.find(x=>x.id===id);if(!p)return;const name=await askText('Profile name',p.name);if(name===null)return;const clean=name.trim();if(!clean)return;p.name=clean;saveProfiles(profiles);render()}
 function deleteProfile(id){const profiles=loadProfiles();if(profiles.length<=1){toast('You need at least one profile');return}const p=profiles.find(x=>x.id===id);if(!p)return;if(!confirm(`Delete "${p.name}"? This permanently removes all of their workout history, 1RMs and settings.`))return;localStorage.removeItem('forgeState:'+id);localStorage.removeItem('strengthosWorkoutDraft:'+id);const wasActive=activeProfileId()===id;saveProfiles(profiles.filter(x=>x.id!==id));if(wasActive){state=load();workoutDraft=loadWorkoutDraft();extraExercises=[];extraMainLifts=[]}render();toast('Profile deleted')}
 const BACKUP_REMINDER_SNOOZE_KEY='strengthos-backup-reminder-snooze';
-const BACKUP_REMINDER_DAYS=21;
+const BACKUP_REMINDER_DAYS=7;
 const BACKUP_FORMAT='strengthos-backup';
 const BACKUP_VERSION=2;
 const DEFAULT={oneRMs:{deadlift:157,bench:107,squat:123,ohp:91},position:0,history:[],prs:[],programmeOverrides:{},programmeChangeLog:[],exerciseNotes:{},activeProgrammeId:'campbell',customProgrammes:[],bodyweightLog:[],settings:{mode:'Strict',roundTo:2.5,goalTotal:500,accessoryMode:'StrengthOS',autoRest:true,exerciseFavourites:[],coachMode:true,equipment:{rack:true,barbell:true,dumbbells:true,landmine:true,bands:true,adjustableBench:true,cable:false,hyper:false,legMachines:false}}};
