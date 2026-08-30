@@ -402,7 +402,7 @@
 <button data-tab="home" class="active">🏠<br>Home</button><button data-tab="coach">🎯<br>Coach</button><button data-tab="progress">📈<br>Progress</button><button data-tab="programme">📅<br>Plan</button><button data-tab="settings">⚙️<br>Settings</button>
 </div></nav>
 <script>
-const VERSION='strengthos-v9.3-onerm-calculator';
+const VERSION='strengthos-v9.4-531-hybrid-3day';
 const PROFILES_KEY='forgeProfiles';
 const ACTIVE_PROFILE_KEY='forgeActiveProfileId';
 function loadProfiles(){try{const raw=JSON.parse(localStorage.getItem(PROFILES_KEY)||'null');if(Array.isArray(raw)&&raw.length)return raw}catch(e){}const legacyState=localStorage.getItem('forgeState');const legacyDraft=localStorage.getItem('strengthosWorkoutDraft');const id='profile-'+Date.now();if(legacyState)localStorage.setItem('forgeState:'+id,legacyState);if(legacyDraft)localStorage.setItem('strengthosWorkoutDraft:'+id,legacyDraft);const profiles=[{id,name:'You'}];localStorage.setItem(PROFILES_KEY,JSON.stringify(profiles));localStorage.setItem(ACTIVE_PROFILE_KEY,id);return profiles}
@@ -572,6 +572,42 @@ function w531FlexibleWorkouts(){const out=[];const weekLabels=['5s','3s','5/3/1'
   simpleAcc('Barbell Row','6 to 10',4),simpleAcc('Ab Work','10 to 15',3)]});
  }return out}
 
+function w531HybridWorkouts(){const out=[];const weekLabels=['5s','3s','5/3/1','Deload'];for(let w=1;w<=4;w++){const wl=weekLabels[w-1];
+ out.push({title:`Squat + Bench — ${wl} Week`,items:[w531Main('squat',w),w531Main('bench',w),
+  {kind:'supplementalChoice',id:'hy-a-pull',label:'Accessory — Pull',options:[
+   variationOpt531('hy-a-pullups','Weighted Pull Ups','6 to 10',4,'Vertical pulling strength to balance the bench.'),
+   variationOpt531('hy-a-row','Barbell Row','6 to 10',4,'Horizontal pulling and back thickness.'),
+   variationOpt531('hy-a-facepull','Face Pulls','15 to 20',3,'Rear delts and shoulder health.')
+  ]},
+  {kind:'supplementalChoice',id:'hy-a-core',label:'Accessory — Core & Arms',options:[
+   variationOpt531('hy-a-ab','Ab Wheel','8 to 12',3,'Anti-extension core strength.'),
+   variationOpt531('hy-a-tricep','Tricep Extension','10 to 15',3,'Triceps volume to support the bench.'),
+   variationOpt531('hy-a-curl','DB Bicep Curl','10 to 15',3,'Arm accessory volume.')
+  ]}]});
+ out.push({title:`Deadlift + Press — ${wl} Week`,items:[w531Main('deadlift',w),w531Main('ohp',w),
+  {kind:'supplementalChoice',id:'hy-b-pull',label:'Accessory — Pull',options:[
+   variationOpt531('hy-b-chinups','Weighted Chin Ups','6 to 10',4,'Vertical pulling to balance overhead pressing.'),
+   variationOpt531('hy-b-landmine','Landmine Row','8 to 12',4,'Horizontal pull, easy on the low back after deadlifts.'),
+   variationOpt531('hy-b-facepull','Face Pulls','15 to 20',3,'Shoulder health after heavy pressing.')
+  ]},
+  {kind:'supplementalChoice',id:'hy-b-core',label:'Accessory — Core & Legs',options:[
+   variationOpt531('hy-b-ab','Ab Work','10 to 15',3,'Core stability.'),
+   variationOpt531('hy-b-lightsquat','Back Squat (light)','6 to 8',3,'Extra squat pattern exposure at moderate effort.'),
+   variationOpt531('hy-b-hypers','Weighted Hypers','8 to 12',3,'Posterior-chain support for the deadlift.')
+  ]}]});
+ out.push({title:`Bench + Squat — ${wl} Week`,items:[w531Main('bench',w),w531Main('squat',w),
+  {kind:'supplementalChoice',id:'hy-c-pull',label:'Accessory — Pull',options:[
+   variationOpt531('hy-c-dbrow','DB Row','8 to 12',4,'Horizontal pulling volume.'),
+   variationOpt531('hy-c-pullups','Weighted Pull Ups','6 to 10',4,'Vertical pulling strength.'),
+   variationOpt531('hy-c-rdl','Romanian Deadlift','8 to 10',4,'Posterior-chain hypertrophy.')
+  ]},
+  {kind:'supplementalChoice',id:'hy-c-core',label:'Accessory — Core & Arms',options:[
+   variationOpt531('hy-c-ab','Ab Work','10 to 15',3,'Core stability.'),
+   variationOpt531('hy-c-dips','Dips','8 to 12',3,'Triceps and chest volume.'),
+   variationOpt531('hy-c-hammer','Hammer Curl','10 to 15',3,'Arm accessory volume.')
+  ]}]});
+ }return out}
+
 function flex531History(limit=8){return (state.history||[]).filter(h=>h.supplemental531).slice(-limit)}
 function flex531LastChoiceForSlot(slotId){const hist=flex531History();for(let i=hist.length-1;i>=0;i--){const c=hist[i].supplemental531?.[slotId];if(c)return c}return null}
 function flex531ExposedRecently(lift,within=3){return flex531History(within).some(h=>Object.values(h.supplemental531||{}).some(x=>x.lift===lift&&!x.skipped))}
@@ -613,6 +649,7 @@ const PROGRAMME_TEMPLATES=[
  {id:'wendler-531-beginner',name:'5/3/1 for Beginners',desc:'Three full-body days with two main lifts and First Set Last work.',daysPerWeek:3,workouts:w531BeginnerWorkouts()},
  {id:'wendler-531-bbb',name:'5/3/1 Boring But Big',desc:'Four-day 5/3/1 with 5 × 10 supplemental work and garage-gym assistance.',daysPerWeek:4,workouts:w531BBBWorkouts()},
  {id:'wendler-531-flexible',name:'5/3/1 Flexible',desc:'Four-day 5/3/1 with Coach-recommended supplemental work each session — FSL, BBB or a variation, your choice.',daysPerWeek:4,workouts:w531FlexibleWorkouts()},
+ {id:'wendler-531-hybrid',name:'5/3/1 Hybrid (3-Day)',desc:'Three-day 5/3/1 rotation pairing two main lifts per session (Squat+Bench, Deadlift+Press, Bench+Squat), with Coach-recommended accessory work each session.',daysPerWeek:3,workouts:w531HybridWorkouts()},
  {id:'two-day-strength',name:'Two-Day Strength',desc:'Minimal two-day plan for busy weeks while retaining squat, bench, deadlift and press exposure.',daysPerWeek:2,workouts:[
   {title:'Day A — Squat + Bench',items:[acc('Back Squat','5',15,{sets:3}),acc('Bench Press','5',15,{sets:3}),acc('Weighted Pull Ups','6 to 10','',{sets:4}),acc('Romanian Deadlift','8 to 10','',{sets:3})]},
   {title:'Day B — Deadlift + Press',items:[acc('Deadlift','3',9,{sets:3}),acc('Viking Press','6',18,{sets:3}),acc('Landmine Row','8 to 12','',{sets:4}),acc('Paused Squat','5','',{sets:3})]}
