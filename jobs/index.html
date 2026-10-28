@@ -73,12 +73,20 @@ details li{margin:4px 0}
 .hist{list-style:none;padding:0;margin:12px 0 0;font-size:.92rem}
 .hist li{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line);color:var(--muted)}
 .hist li b{color:var(--ink)}
+.mini{position:fixed;top:0;left:0;right:0;z-index:10;background:var(--ink);color:var(--bg);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 12px;transform:translateY(-100%);transition:transform .2s ease;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.mini.show{transform:none}
+.mini .in{max-width:528px;margin:0 auto}
+.mini .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-weight:600}
+.mini .num{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.drop{animation:drop .6s ease}
+@keyframes drop{0%{color:var(--bad)}100%{color:inherit}}
 .note{font-size:.85rem;color:var(--muted);text-align:center;margin:-10px 0 18px}
 button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+@media (prefers-reduced-motion:reduce){.bar i,.mini{transition:none}.drop{animation:none}}
 </style>
 </head>
 <body>
+<div class="mini" id="mini" aria-hidden="true"><div class="in"><div class="top"><span id="miniName"></span><span class="num" id="miniNum"></span></div><div class="bar"><i id="miniBar"></i></div></div></div>
 <main id="root"></main>
 <script>
 (function(){
@@ -147,7 +155,15 @@ function render(){var w=kid().week,c=calc(w),ti=todayIdx(w),name=kidName(),h='';
  h+='<section><button class="btn pay'+(payArmed?' confirm':'')+'" data-act="pay">'+(payArmed?'Tap again to pay '+name+' '+money(c.total)+' and start next week':'Pay '+name+' '+money(c.total)+' and start next week')+'</button></section>';
  var hist=kid().history;
  if(hist.length){h+='<section><h2>Paid so far</h2><ul class="hist">'+hist.slice(-8).reverse().map(function(x){return '<li><span>Week of '+fmtDate(x.weekStart)+'</span><b>'+money(x.total)+'</b></li>'}).join('')+'</ul></section>'}
- root.innerHTML=h;document.title=name+'’s Jobs'}
+ root.innerHTML=h;document.title=name+'’s Jobs';
+ var mn=document.getElementById('miniNum'),dropped=lastKid===state.active&&lastTotal!==null&&c.total<lastTotal;
+ document.getElementById('miniName').textContent=name+'’s pay this week';
+ mn.textContent=money(c.total);document.getElementById('miniBar').style.width=(c.total/MAX*100)+'%';
+ if(dropped){[mn,root.querySelector('.slip .num')].forEach(function(el){el.classList.remove('drop');void el.offsetWidth;el.classList.add('drop')})}
+ lastTotal=c.total;lastKid=state.active;
+ if(slipObs){slipObs.disconnect();slipObs.observe(root.querySelector('.slip'))}}
+var lastTotal=null,lastKid=null,mini=document.getElementById('mini');
+var slipObs='IntersectionObserver' in window?new IntersectionObserver(function(es){mini.classList.toggle('show',!es[0].isIntersecting&&es[0].boundingClientRect.top<0)}):null;
 
 function change(fn){fn();payArmed=false;persist();render()}
 
