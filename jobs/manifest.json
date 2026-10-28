@@ -1,0 +1,13 @@
+{
+  "name": "Family Jobs Tracker",
+  "short_name": "Jobs",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EEF1F5",
+  "theme_color": "#16213A",
+  "icons": [
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml"}
+  ],
+  "description": "Weekly jobs and pay tracker for Oliver and Martha."
+}

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Family Jobs Tracker</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jobs">
+<meta name="theme-color" content="#EEF1F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1522" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF1F5;--surface:#FFFFFF;--ink:#16213A;--muted:#5B6578;--line:#D8DDE6;--good:#17845A;--good-soft:#DDF2E8;--bad:#C93636;--bad-soft:#F8E1E1;--accent:#2B4FD8;--accent-soft:#E3E9FD;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1522;--surface:#18202F;--ink:#E8ECF3;--muted:#98A2B5;--line:#2A3446;--good:#3CC48A;--good-soft:#173A2C;--bad:#F06A6A;--bad-soft:#3D1F22;--accent:#8EA4FF;--accent-soft:#222C4D;color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+main{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.num{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+h1{font-size:1.5rem;font-weight:800;margin:0;letter-spacing:-.01em}
+.wk{color:var(--muted);font-size:.9rem}
+.kids{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.kids button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:10px 14px;text-align:left;cursor:pointer;font:600 1rem Figtree,system-ui,sans-serif}
+.kids button small{display:block;font-weight:500;color:var(--muted);font-size:.85rem}
+.kids button.on{background:var(--accent-soft);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.slip{background:var(--ink);color:var(--bg);border-radius:20px;padding:22px 22px 18px;margin-bottom:22px}
+.slip .lbl{font-size:.95rem;opacity:.75}
+.slip .num{font-size:clamp(4.2rem,22vw,6.5rem);font-weight:800;line-height:.95;letter-spacing:-.04em;margin:4px 0 14px}
+.bar{height:10px;border-radius:5px;background:color-mix(in srgb,var(--bg) 22%,transparent);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--bg);border-radius:5px;transition:width .3s ease}
+.lines{margin:14px 0 0;padding:0;list-style:none;font-size:.92rem}
+.lines li{display:flex;justify-content:space-between;padding:5px 0;border-top:1px dashed color-mix(in srgb,var(--bg) 30%,transparent)}
+.lines li:first-child{border-top:0}
+.lines .none{opacity:.75}
+section{margin-bottom:26px}
+h2{font-size:1.15rem;font-weight:800;margin:0 0 4px}
+.sub{color:var(--muted);font-size:.88rem;margin:0 0 12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 14px}
+.row{padding:12px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.rname{display:flex;justify-content:space-between;gap:10px;font-weight:600;margin-bottom:8px}
+.rname small{font-weight:500;color:var(--muted);white-space:nowrap}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.days button{appearance:none;border:1px solid var(--line);background:var(--bg);color:var(--muted);height:40px;border-radius:10px;font:600 .85rem Figtree,system-ui,sans-serif;cursor:pointer;padding:0}
+.days button.today{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.days button.s1{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.days button.s2{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.days button:disabled{opacity:.3;cursor:default;background:transparent;border-style:dashed}
+.seg{display:flex;gap:6px}
+.seg button,.btn{appearance:none;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:9px 14px;font:600 .9rem Figtree,system-ui,sans-serif;cursor:pointer}
+.seg button.on1{background:var(--good);border-color:var(--good);color:#fff}
+.seg button.on2{background:var(--bad);border-color:var(--bad);color:#fff}
+.wrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wrow .t{font-weight:600}
+.wrow .t small{display:block;font-weight:500;color:var(--muted)}
+input[type=text]{width:100%;margin-top:8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:500 .95rem Figtree,system-ui,sans-serif}
+.step{display:flex;align-items:center;gap:8px}
+.step button{width:38px;height:38px;padding:0;font-size:1.2rem}
+.step .num{min-width:1.6em;text-align:center;font-size:1.25rem;font-weight:800}
+.warn{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted);margin-top:6px}
+.warn input{width:20px;height:20px;accent-color:var(--accent)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+summary{font-weight:700;cursor:pointer}
+details ul{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:.92rem}
+details li{margin:4px 0}
+.pay{width:100%;padding:15px;font-size:1rem;background:var(--accent);border-color:var(--accent);color:#fff;border-radius:14px}
+.pay.confirm{background:var(--good);border-color:var(--good)}
+.hist{list-style:none;padding:0;margin:12px 0 0;font-size:.92rem}
+.hist li{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line);color:var(--muted)}
+.hist li b{color:var(--ink)}
+.note{font-size:.85rem;color:var(--muted);text-align:center;margin:-10px 0 18px}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main id="root"></main>
+<script>
+(function(){
+var KEY='family-jobs-v1',MAX=20;
+var KIDS=[{k:'oliver',name:'Oliver'},{k:'martha',name:'Martha'}];
+var DAILY=[
+ {k:'up',name:'Up and ready for school on time',cost:1,note:'£1 per miss',days:[0,1,2,3,4]},
+ {k:'bed',name:'Bed made',cost:.5,note:'50p per miss'},
+ {k:'dishes',name:'Dishes cleared after meals',cost:.5,note:'50p per miss'},
+ {k:'tidy',name:'Clothes in laundry, bedroom tidy',cost:.5,note:'50p per miss'},
+ {k:'bath',name:'Bathroom left tidy after use',cost:.5,note:'50p per miss'},
+ {k:'revise',name:'Started revision without being asked',cost:.5,note:'50p per miss'}
+];
+var WEEKLY=[
+ {k:'binsIn',name:'Empty bedroom and bathroom bins',when:'By Sunday'},
+ {k:'binsOut',name:'Household bins out',when:'Collection day'},
+ {k:'stairs',name:'Vacuum stairs and landing',when:'Saturday'},
+ {k:'vacBed',name:'Vacuum bedroom',when:'Saturday'},
+ {k:'bathroom',name:'Clean bathroom sink and mirror',when:'Sunday morning'},
+ {k:'family',name:'Family job',when:'Chosen on Monday'}
+];
+var STANDARDS=[{k:'respect',name:'Respectful to family'},{k:'homework',name:'Homework and school done'}];
+var DAYN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var state=load(),payArmed=false,saveFailed=false;
+var root=document.getElementById('root');
+
+function blankWeek(ws){var d={};DAILY.concat([{k:'wash'}]).forEach(function(t){d[t.k]=[0,0,0,0,0,0,0]});var w={};WEEKLY.forEach(function(t){w[t.k]=0});var s={};STANDARDS.forEach(function(t){s[t.k]={w:false,n:0}});return {weekStart:ws,daily:d,weekly:w,familyJob:'',standards:s}}
+function normaliseKid(st){st=st||{};var b=blankWeek(st.week&&st.week.weekStart||mondayOf(new Date()));var w=st.week||{};['daily','weekly','standards'].forEach(function(k){if(w[k])for(var x in b[k])if(w[k][x]!==undefined)b[k][x]=w[k][x]});if(w.familyJob)b.familyJob=w.familyJob;return {week:b,history:st.history||[]}}
+function load(){var raw={};try{raw=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}var st={active:raw.active,kids:{}};
+ KIDS.forEach(function(c){st.kids[c.k]=normaliseKid(raw.kids&&raw.kids[c.k])});
+ if(!st.kids[st.active])st.active=KIDS[0].k;return st}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));saveFailed=false}catch(e){saveFailed=true}}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function mondayOf(d){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return iso(x)}
+function parse(s){var p=s.split('-');return new Date(+p[0],p[1]-1,+p[2])}
+function fmtDate(s){return parse(s).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+function money(n){return '£'+(Math.round(n*100)%100?n.toFixed(2):String(Math.round(n)))}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function kid(){return state.kids[state.active]}
+function kidName(){return KIDS.filter(function(c){return c.k===state.active})[0].name}
+function todayIdx(w){var ws=parse(w.weekStart),t=new Date();t=new Date(t.getFullYear(),t.getMonth(),t.getDate());var i=Math.round((t-ws)/864e5);return i>=0&&i<7?i:-1}
+
+function calc(w){var lines=[];
+ DAILY.forEach(function(t){var m=w.daily[t.k].filter(function(v,i){return v===2&&(!t.days||t.days.indexOf(i)>-1)}).length;if(m)lines.push([t.name+' ×'+m,m*t.cost])});
+ var wd=w.daily.wash,done=wd.filter(function(v){return v===1}).length,open=wd.filter(function(v){return v===0}).length;
+ if(done+open<4)lines.push(['Washing up, under 4 nights',2]);
+ WEEKLY.forEach(function(t){if(w.weekly[t.k]===2)lines.push([t.name,2])});
+ STANDARDS.forEach(function(t){var n=w.standards[t.k].n;if(n)lines.push([t.name+' ×'+n,n*5])});
+ var lost=lines.reduce(function(a,l){return a+l[1]},0);return {lines:lines,total:Math.max(0,MAX-lost),washDone:done}}
+
+function render(){var w=kid().week,c=calc(w),ti=todayIdx(w),name=kidName(),h='';
+ var end=parse(w.weekStart);end.setDate(end.getDate()+6);
+ h+='<header><h1>'+name+'’s week</h1><span class="wk">'+fmtDate(w.weekStart)+' to '+fmtDate(iso(end))+'</span></header>';
+ h+='<div class="kids" role="tablist">'+KIDS.map(function(k){var on=k.k===state.active;return '<button role="tab" data-act="kid" data-k="'+k.k+'" class="'+(on?'on':'')+'" aria-selected="'+on+'">'+k.name+'<small>'+money(calc(state.kids[k.k].week).total)+' so far</small></button>'}).join('')+'</div>';
+ h+='<div class="slip"><div class="lbl">Pay this week so far</div><div class="num">'+money(c.total)+'</div><div class="bar"><i style="width:'+(c.total/MAX*100)+'%"></i></div><ul class="lines">'+(c.lines.length?c.lines.map(function(l){return '<li><span>'+esc(l[0])+'</span><span>−'+money(l[1])+'</span></li>'}).join(''):'<li class="none"><span>No deductions yet</span><span>'+money(MAX)+' max</span></li>')+'</ul></div>';
+ h+='<p class="note">'+(saveFailed?'Couldn’t save on this device. Check private browsing is off.':'Saved on this device only.')+'</p>';
+ h+='<section><h2>Every day</h2><p class="sub">Tap once for done, twice for missed. Only missed costs money.</p><div class="card">';
+ DAILY.concat([{k:'wash',name:'Washed or dried up after tea',note:c.washDone+' of 4 nights'}]).forEach(function(t){h+='<div class="row"><div class="rname"><span>'+t.name+'</span><small>'+t.note+'</small></div><div class="days">';
+  for(var i=0;i<7;i++){var off=t.days&&t.days.indexOf(i)<0,v=w.daily[t.k][i];h+='<button data-act="day" data-k="'+t.k+'" data-i="'+i+'" class="'+(v?'s'+v:'')+(i===ti?' today':'')+'"'+(off?' disabled':'')+' aria-label="'+t.name+', '+DAYN[i]+': '+(v===1?'done':v===2?'missed':'not marked')+'">'+(v===1?'✓':v===2?'✗':DAYN[i].charAt(0))+'</button>'}
+  h+='</div></div>'});
+ h+='</div></section><section><h2>Weekly jobs</h2><p class="sub">£2 each if missed.</p><div class="card">';
+ WEEKLY.forEach(function(t){var v=w.weekly[t.k];h+='<div class="row"><div class="wrow"><div class="t">'+t.name+'<small>'+t.when+'</small></div><div class="seg"><button data-act="wk" data-k="'+t.k+'" data-v="1" class="'+(v===1?'on1':'')+'" aria-pressed="'+(v===1)+'">Done</button><button data-act="wk" data-k="'+t.k+'" data-v="2" class="'+(v===2?'on2':'')+'" aria-pressed="'+(v===2)+'">Missed</button></div></div>'+(t.k==='family'?'<input type="text" data-act="fam" placeholder="This week’s job, e.g. wash the car" value="'+esc(w.familyJob)+'">':'')+'</div>'});
+ h+='</div></section><section><h2>Minimum standards</h2><p class="sub">One warning first, then £5 per slip.</p><div class="card">';
+ STANDARDS.forEach(function(t){var s=w.standards[t.k];h+='<div class="row"><div class="wrow"><div class="t">'+t.name+'</div><div class="step"><button class="btn" data-act="slip" data-k="'+t.k+'" data-d="-1" aria-label="Remove slip">−</button><span class="num">'+s.n+'</span><button class="btn" data-act="slip" data-k="'+t.k+'" data-d="1" aria-label="Add slip">+</button></div></div><label class="warn"><input type="checkbox" data-act="warn" data-k="'+t.k+'"'+(s.w?' checked':'')+'> Warning given</label></div>'});
+ h+='</div></section><section><details><summary>The rules</summary><ul><li>Starts at £20 every Monday. Can’t go below £0.</li><li>A job done after one reminder still counts. Done only after nagging, it doesn’t.</li><li>Washing or drying up: at least 4 nights, or £2 off.</li><li>Minimum standards: one warning, then £5 per slip. Anything serious is Mum or Dad’s call, up to the full £20.</li><li>Mum or Dad settles the total on Sunday, then pays.</li></ul></details></section>';
+ h+='<section><button class="btn pay'+(payArmed?' confirm':'')+'" data-act="pay">'+(payArmed?'Tap again to pay '+name+' '+money(c.total)+' and start next week':'Pay '+name+' '+money(c.total)+' and start next week')+'</button></section>';
+ var hist=kid().history;
+ if(hist.length){h+='<section><h2>Paid so far</h2><ul class="hist">'+hist.slice(-8).reverse().map(function(x){return '<li><span>Week of '+fmtDate(x.weekStart)+'</span><b>'+money(x.total)+'</b></li>'}).join('')+'</ul></section>'}
+ root.innerHTML=h;document.title=name+'’s Jobs'}
+
+function change(fn){fn();payArmed=false;persist();render()}
+
+root.addEventListener('click',function(e){var b=e.target.closest('[data-act]');if(!b||b.disabled)return;var a=b.dataset.act,k=b.dataset.k,w=kid().week;
+ if(a==='kid'){if(k!==state.active)change(function(){state.active=k;window.scrollTo(0,0)})}
+ else if(a==='day')change(function(){var i=+b.dataset.i;w.daily[k][i]=(w.daily[k][i]+1)%3});
+ else if(a==='wk')change(function(){var v=+b.dataset.v;w.weekly[k]=w.weekly[k]===v?0:v});
+ else if(a==='slip')change(function(){w.standards[k].n=Math.max(0,Math.min(4,w.standards[k].n+ +b.dataset.d))});
+ else if(a==='warn')change(function(){w.standards[k].w=b.checked});
+ else if(a==='pay'){if(!payArmed){payArmed=true;render();setTimeout(function(){if(payArmed){payArmed=false;render()}},5000);return}
+  change(function(){var c=kid(),t=calc(w).total,cur=mondayOf(new Date()),next=cur>w.weekStart?cur:(function(){var d=parse(w.weekStart);d.setDate(d.getDate()+7);return iso(d)})();c.history.push({weekStart:w.weekStart,total:t});c.week=blankWeek(next)})}});
+root.addEventListener('change',function(e){var t=e.target;if(t.dataset.act==='fam')change(function(){kid().week.familyJob=t.value.slice(0,80)})});
+
+render();
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(function(){})});
+})();
+</script>
+</body>
+</html>
