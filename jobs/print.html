@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Sheets</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16213A;--muted:#5B6578;--line:#D8DDE6;--bad:#C93636;--accent:#2B4FD8;--bg:#EEF1F5}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.4;-webkit-font-smoothing:antialiased}
+h1,h2,.big{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif}
+.bar{max-width:210mm;margin:0 auto;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.bar a{color:var(--accent);font-weight:600;text-decoration:none}
+.bar button{appearance:none;border:0;background:var(--accent);color:#fff;border-radius:10px;padding:10px 16px;font:600 .95rem Figtree,system-ui,sans-serif;cursor:pointer}
+.sheet{background:#fff;max-width:210mm;margin:0 auto 24px;padding:14mm 14mm 12mm;border-radius:8px;box-shadow:0 2px 12px rgba(22,33,58,.08)}
+header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:14px}
+h1{font-size:2.4rem;font-weight:800;margin:0;letter-spacing:-.02em;line-height:1}
+.pay{text-align:right;font-size:.9rem;color:var(--muted)}
+.pay .big{display:block;font-size:2.4rem;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-.03em}
+h2{font-size:1.1rem;font-weight:800;margin:16px 0 4px;display:flex;justify-content:space-between;align-items:baseline}
+h2 small{font-family:Figtree,system-ui,sans-serif;font-size:.85rem;font-weight:600;color:var(--bad)}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}
+li span:first-child::before{content:"";display:inline-block;width:13px;height:13px;border:2px solid var(--ink);border-radius:3px;margin-right:10px;vertical-align:-1px}
+li .r{color:var(--muted);white-space:nowrap;font-size:.9rem}
+.rules{margin-top:16px;padding:10px 14px;background:var(--bg);border-radius:8px;font-size:.88rem}
+.rules b{display:block;margin-bottom:4px}
+.rules p{margin:3px 0}
+@page{size:A4;margin:0}
+@media print{body{background:#fff}.bar{display:none}.sheet{margin:0;max-width:none;width:210mm;height:297mm;border-radius:0;box-shadow:none;break-after:page;overflow:hidden}.sheet:last-child{break-after:auto}}
+</style>
+</head>
+<body>
+<div class="bar"><a href="./">← Back to tracker</a><button type="button" onclick="print()">Print</button></div>
+<div id="sheets"></div>
+<script>
+(function(){
+var KIDS=['Oliver','Martha'];
+var DAILY=[
+ ['Up and ready for school on time','Mon to Fri','£1'],
+ ['Bed made','Every day','50p'],
+ ['Dishes cleared after meals','Every day','50p'],
+ ['Clothes in laundry, bedroom tidy','Every day','50p'],
+ ['Bathroom left tidy after use','Every day','50p'],
+ ['Start revision without being asked','Every day','50p'],
+ ['Wash or dry up after tea','At least 4 nights','£2']
+];
+var WEEKLY=[
+ ['Empty bedroom and bathroom bins','By Sunday'],
+ ['Household bins out','Collection day'],
+ ['Vacuum stairs and landing','Saturday'],
+ ['Vacuum bedroom','Saturday'],
+ ['Clean bathroom sink and mirror','Sunday morning'],
+ ['Family job','Chosen on Monday']
+];
+var STANDARDS=['Respectful to family','Homework and school done'];
+function li(a,b){return '<li><span>'+a+'</span><span class="r">'+b+'</span></li>'}
+document.getElementById('sheets').innerHTML=KIDS.map(function(n){
+ return '<section class="sheet"><header><h1>'+n+'’s jobs</h1><div class="pay">Pocket money each week<span class="big">£20</span></div></header>'+
+ '<h2>Every day <small>Cost if missed</small></h2><ul>'+DAILY.map(function(d){return li(d[0],d[1]+' · '+d[2])}).join('')+'</ul>'+
+ '<h2>Every week <small>£2 each if missed</small></h2><ul>'+WEEKLY.map(function(w){return li(w[0],w[1])}).join('')+'</ul>'+
+ '<h2>Always <small>£5 per slip after a warning</small></h2><ul>'+STANDARDS.map(function(s){return li(s,'')}).join('')+'</ul>'+
+ '<div class="rules"><b>The rules</b><p>You start every week on £20. It can’t go below £0.</p><p>A job done after one reminder still counts. If it only gets done after nagging, it doesn’t.</p><p>One warning first for the “Always” list, then £5 off each time. Anything serious is Mum or Dad’s call.</p><p>We add it up together on Sunday, then you get paid.</p></div></section>'}).join('');
+})();
+</script>
+</body>
+</html>
