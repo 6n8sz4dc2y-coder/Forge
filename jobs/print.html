@@ -27,6 +27,15 @@ ul{list-style:none;margin:0;padding:0}
 li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}
 li span:first-child::before{content:"";display:inline-block;width:13px;height:13px;border:2px solid var(--ink);border-radius:3px;margin-right:10px;vertical-align:-1px}
 li .r{color:var(--muted);white-space:nowrap;font-size:.9rem}
+.daily li{display:grid;grid-template-columns:1fr auto 4.5em;align-items:center}
+.daily li span:first-child::before{display:none}
+.daily .r{text-align:right}
+.wk{display:grid;grid-template-columns:repeat(7,26px);gap:5px}
+.wk i{display:block;width:26px;height:26px;border:2px solid var(--ink);border-radius:5px}
+.wk i.off{border-color:var(--line);background:repeating-linear-gradient(45deg,transparent 0 4px,var(--line) 4px 5px)}
+.wk.head{font-size:.75rem;font-weight:700;color:var(--muted);text-align:center}
+.wk.head b{width:26px}
+.daily .hrow{border-bottom:0;padding-bottom:0}
 .rules{margin-top:16px;padding:10px 14px;background:var(--bg);border-radius:8px;font-size:.88rem}
 .rules b{display:block;margin-bottom:4px}
 .rules p{margin:3px 0}
@@ -41,14 +50,16 @@ li .r{color:var(--muted);white-space:nowrap;font-size:.9rem}
 (function(){
 var KIDS=['Oliver','Martha'];
 var DAILY=[
- ['Up and ready for school on time','Mon to Fri','£1'],
- ['Bed made','Every day','50p'],
- ['Dishes cleared after meals','Every day','50p'],
- ['Clothes in laundry, bedroom tidy','Every day','50p'],
- ['Bathroom left tidy after use','Every day','50p'],
- ['Start revision without being asked','Every day','50p'],
- ['Wash or dry up after tea','At least 4 nights','£2']
+ ['Up and ready for school on time','£1',5],
+ ['Bed made','50p'],
+ ['Dishes cleared after meals','50p'],
+ ['Clothes in laundry, bedroom tidy','50p'],
+ ['Bathroom left tidy after use','50p'],
+ ['Start revision without being asked','50p'],
+ ['Wash or dry up after tea (4 nights)','£2']
 ];
+var DAYS=['M','T','W','T','F','S','S'];
+function boxes(n){return '<span class="wk">'+DAYS.map(function(d,i){return '<i'+(n&&i>=n?' class="off"':'')+'></i>'}).join('')+'</span>'}
 var WEEKLY=[
  ['Empty bedroom and bathroom bins','By Sunday'],
  ['Household bins out','Collection day'],
@@ -61,7 +72,7 @@ var STANDARDS=['Respectful to family','Homework and school done'];
 function li(a,b){return '<li><span>'+a+'</span><span class="r">'+b+'</span></li>'}
 document.getElementById('sheets').innerHTML=KIDS.map(function(n){
  return '<section class="sheet"><header><h1>'+n+'’s jobs</h1><div class="pay">Pocket money each week<span class="big">£20</span></div></header>'+
- '<h2>Every day <small>Cost if missed</small></h2><ul>'+DAILY.map(function(d){return li(d[0],d[1]+' · '+d[2])}).join('')+'</ul>'+
+ '<h2>Every day <small>Cost if missed</small></h2><ul class="daily"><li class="hrow"><span></span><span class="wk head">'+DAYS.map(function(d){return '<b>'+d+'</b>'}).join('')+'</span><span></span></li>'+DAILY.map(function(d){return '<li><span>'+d[0]+'</span>'+boxes(d[2])+'<span class="r">'+d[1]+'</span></li>'}).join('')+'</ul>'+
  '<h2>Every week <small>£2 each if missed</small></h2><ul>'+WEEKLY.map(function(w){return li(w[0],w[1])}).join('')+'</ul>'+
  '<h2>Always <small>£5 per slip after a warning</small></h2><ul>'+STANDARDS.map(function(s){return li(s,'')}).join('')+'</ul>'+
  '<div class="rules"><b>The rules</b><p>You start every week on £20. It can’t go below £0.</p><p>A job done after one reminder still counts. If it only gets done after nagging, it doesn’t.</p><p>One warning first for the “Always” list, then £5 off each time. Anything serious is Mum or Dad’s call.</p><p>We add it up together on Sunday, then you get paid.</p></div></section>'}).join('');
